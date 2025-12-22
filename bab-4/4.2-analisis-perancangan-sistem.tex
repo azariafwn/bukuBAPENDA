@@ -53,17 +53,17 @@ Berdasarkan diskusi dan analisis, diidentifikasi kebutuhan fungsional yang menja
 \subsection{Perancangan Arsitektur Sistem}
 Sistem ini dibangun menggunakan arsitektur \emph{Model View Controller} (MVC) yang disediakan oleh \emph{framework} ASP.NET Core dengan bahasa pemrograman C\#. Pola arsitektur ini dipilih karena kemampuannya memisahkan antara logika bisnis, data, dan presentasi, sehingga menghasilkan struktur kode yang rapi, modular, dan mudah dikelola.
 \begin{itemize}
-    \item \textbf{Model}: \\
+    \item \textbf{\emph{Model}}: \\
     Terdiri dari serangkaian kelas \emph{ViewModel} (VM) yang dirancang khusus untuk setiap halaman. \emph{ViewModel} ini berfungsi sebagai ``cetakan'' data yang akan dikirim ke antarmuka, menggabungkan data dari berbagai sumber dan mengolahnya sesuai kebutuhan tampilan. Di dalam \emph{ViewModel}, terdapat juga kelas \emph{Method} yang berisi logika untuk mengambil dan memanipulasi data (baik data \emph{dummy} maupun dari basis data). \\
-    Salah satu keputusan desain arsitektur yang penting adalah menempatkan sebagian besar logika bisnis di dalam \emph{Method} pada setiap \emph{ViewModel}. Dengan pendekatan ini, \emph{Controller} hanya bertugas sebagai penerus permintaan. Contohnya, pada \emph{ViewModel} \texttt{ReklameLiarVM}, terdapat lebih dari 5 \emph{class} yang berbeda (\emph{Index, Show, Detail, RekapBulanan, DetailData}) untuk melayani setiap kebutuhan data yang spesifik, mulai dari data rekap bulanan hingga data detail untuk \emph{modal pop-up}.
-    \item \textbf{View}: \\
-    Terdiri dari file-file \texttt{.cshtml} (\emph{Razor}) yang bertanggung jawab untuk menampilkan antarmuka pengguna. Halaman \emph{View} menerima data dari \emph{Controller} melalui objek \emph{ViewModel} dan menampilkannya dalam bentuk \emph{dashboard}, tabel, dan formulir. Sebagian besar tampilan tabel interaktif diimplementasikan menggunakan komponen dari \emph{DevExtreme}.
-    \item \textbf{Controller}: \\
-    Berperan sebagai jembatan antara \emph{Model} dan \emph{View}. \emph{Controller} menerima permintaan HTTP dari pengguna (misalnya, saat \emph{filter} diterapkan), memanggil \emph{Method} yang sesuai di dalam \emph{ViewModel} untuk mendapatkan data, lalu mengirimkan data tersebut ke \emph{View} yang relevan untuk ditampilkan kepada pengguna.
+    Salah satu keputusan desain arsitektur yang penting adalah menempatkan sebagian besar logika bisnis di dalam \emph{Method} pada setiap \emph{ViewModel}. Dengan pendekatan ini, \emph{Controller} hanya bertugas sebagai penerus permintaan. Contohnya, pada \emph{ViewModel} \texttt{ReklameLiarVM}, terdapat lebih dari 5 \emph{class} yang berbeda (\texttt{Index}, \texttt{Show}, \texttt{Detail}, \texttt{RekapBulanan}, \texttt{DetailData}) untuk melayani setiap kebutuhan data yang spesifik, mulai dari data rekap bulanan hingga data detail untuk \emph{modal pop-up}.
+    \item \textbf{\emph{View}}: \\
+    Terdiri dari file-file \texttt{.cshtml} (\emph{Razor}) yang bertanggung jawab untuk menampilkan antarmuka pengguna. Halaman \emph{View} menerima data dari \emph{Controller} melalui objek \emph{ViewModel} dan menampilkannya dalam bentuk \emph{dashboard}, tabel, dan formulir. Sebagian besar tampilan tabel interaktif diimplementasikan menggunakan komponen dari \texttt{DevExtreme}.
+    \item \textbf{\emph{Controller}}: \\
+    Berperan sebagai jembatan antara \emph{Model} dan \emph{View}. \emph{Controller} menerima permintaan HTTP dari pengguna (misalnya, saat filter diterapkan), memanggil \emph{Method} yang sesuai di dalam \emph{ViewModel} untuk mendapatkan data, lalu mengirimkan data tersebut ke \emph{View} yang relevan untuk ditampilkan kepada pengguna.
 \end{itemize}
 
-\subsection{Perancangan Database}
-Aplikasi ini berinteraksi dengan basis data yang sudah ada di server \emph{database} Bapenda. Koneksi dan manipulasi data dari aplikasi ke basis data ditangani menggunakan \emph{Entity Framework Core}, dengan kelas \texttt{DBContext} yang berfungsi sebagai gerbang utama. Data yang digunakan selama pengembangan bersifat data riil, sehingga struktur \emph{ViewModel} dan logika aplikasi dirancang untuk dapat terhubung langsung dengan tabel-tabel utama seperti \texttt{TPemeriksaan}, \texttt{DbMonResto}, \texttt{DbMonParkir}, dan lainnya, yang merepresentasikan data riil di server \emph{database} Bapenda.
+\subsection{Perancangan \emph{Database}}
+Aplikasi ini berinteraksi dengan basis data yang sudah ada di \emph{server database} Bapenda. Koneksi dan manipulasi data dari aplikasi ke basis data ditangani menggunakan \emph{Entity Framework Core}, dengan kelas \texttt{DBContext} yang berfungsi sebagai gerbang utama. Data yang digunakan selama pengembangan bersifat data riil, sehingga struktur \emph{ViewModel} dan logika aplikasi dirancang untuk dapat terhubung langsung dengan tabel-tabel utama seperti \texttt{TPemeriksaan}, \texttt{DbMonResto}, \texttt{DbMonParkir}, dan lainnya, yang merepresentasikan data riil di \emph{server database} Bapenda.
 
 \subsection{Perancangan Antarmuka (UI/UX)}
 
@@ -75,7 +75,7 @@ Perancangan antarmuka pada sistem MonPD Reborn dilakukan dengan mengedepankan pr
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.8\textwidth]{gambar/wireframe-dashboard-utama-monpd.png}
-        \caption{Wireframe Dashboard Utama MonPD Reborn}
+        \caption{\emph{Wireframe Dashboard} Utama MonPD Reborn}
         \label{fig:wireframe-dashboard-utama-monpd}
     \end{figure}
     \begin{itemize}
@@ -88,7 +88,7 @@ Perancangan antarmuka pada sistem MonPD Reborn dilakukan dengan mengedepankan pr
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.55\textwidth]{gambar/wireframe-dashboard-menu-monpd.png}
-        \caption{Wireframe Dashboard Menu MonPD Reborn}
+        \caption{\emph{Wireframe Dashboard} Menu MonPD Reborn}
         \label{fig:wireframe-dashboard-menu-monpd}
     \end{figure}
     \begin{itemize}
@@ -102,7 +102,7 @@ Perancangan antarmuka pada sistem MonPD Reborn dilakukan dengan mengedepankan pr
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.85\textwidth]{gambar/wireframe-datagrid.png}
-        \caption{Wireframe DataGrid}
+        \caption{\emph{Wireframe DataGrid}}
         \label{fig:wireframe-datagrid}
     \end{figure}
     \begin{itemize}
@@ -110,8 +110,15 @@ Perancangan antarmuka pada sistem MonPD Reborn dilakukan dengan mengedepankan pr
         \item \textbf{Analisis Penempatan:} Ikon pencarian (\emph{magnifying glass}) diletakkan langsung di bawah \emph{header} kolom untuk memudahkan pencarian data spesifik (misalnya Nama atau Alamat) secara cepat, mengurangi kebutuhan untuk fitur pencarian global yang seringkali menghasilkan data yang terlalu luas.
     \end{itemize}
 
-    \item Rancangan \emph{Drill-down} dan Visualisasi Geospasial \\
-    Untuk memperdalam analisis data tanpa kehilangan konteks halaman utama, sistem mengintegrasikan fitur \emph{modal pop-up} dan pemetaan (Gambar \ref{fig:wireframe-geospasial}).
+    \item Rancangan \emph{Drill-down} dan \emph{Pop-up} Detail \\
+    Untuk memberikan akses informasi yang lebih mendalam tanpa mengganggu alur kerja pengguna, sistem menyediakan fitur \emph{drill-down} yang memungkinkan rincian data tampil secara transisi.    
+    \begin{itemize}
+        \item \textbf{Fitur:} Jendela \emph{modal pop-up} yang menampilkan rincian transaksi individu secara spesifik.
+        \item \textbf{Analisis Penempatan:} Penggunaan jendela \emph{modal} di atas halaman utama bertujuan untuk menjaga \emph{context-awareness} pengguna. Dengan tetap menampilkan latar belakang halaman rekapitulasi yang sedikit meredup, pengguna akan tetap ingat pada parameter filter atau kategori data awal yang sedang mereka amati saat melihat detail transaksi.
+    \end{itemize}
+
+    \item Rancangan Visualisasi Geospasial \\
+    Penyajian data berbasis lokasi dirancang untuk memberikan pemahaman spasial terhadap sebaran objek pajak di wilayah Kota Surabaya sebagaimana ditunjukkan pada Gambar \ref{fig:wireframe-geospasial}.
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.73\textwidth]{gambar/wireframe-geospasial.png}
@@ -119,9 +126,15 @@ Perancangan antarmuka pada sistem MonPD Reborn dilakukan dengan mengedepankan pr
         \label{fig:wireframe-geospasial}
     \end{figure}
     \begin{itemize}
-        \item \textbf{Pop-up Detail:} Menggunakan jendela \emph{modal} di atas halaman utama untuk menampilkan transaksi individu. Ini bertujuan untuk menjaga \emph{context-awareness} pengguna agar tetap ingat pada parameter rekapitulasi yang sedang mereka amati.
-        \item \textbf{Plotting Peta:} Visualisasi titik lokasi objek pajak di atas peta Kota Surabaya diletakkan secara terintegrasi dengan filter wilayah. Penempatan ini memudahkan tim lapangan dalam merencanakan rute pengawasan berdasarkan kepadatan titik objek pajak secara visual.
+        \item \textbf{Fitur:} Pencarian nama objek pajak, filter wilayah (UPTB), filter jenis pajak secara spesifik, dan area pemetaan titik lokasi.
+        \item \textbf{Analisis Penempatan:} 
+            \begin{itemize}
+                \item Filter Wilayah dan Nama Objek Pajak (\emph{yellow box}): Diletakkan di bagian atas panel kendali untuk memudahkan pengguna mempersempit pencarian lokasi berdasarkan nama spesifik atau wilayah kerja UPTB tertentu.
+                \item Filter Jenis Pajak (\emph{green box}): Penempatan daftar pilihan jenis pajak secara vertikal memungkinkan pengguna untuk melakukan \emph{plotting} multi-sektor sekaligus atau fokus pada satu kategori pajak saja guna melihat kepadatan sebaran secara visual.
+                \item Titik Lokasi Objek Pajak (\emph{blue box}): Area peta diletakkan sebagai elemen visual utama yang paling luas. Penempatan ini memudahkan tim lapangan dalam merencanakan rute pengawasan secara efektif berdasarkan konsentrasi sebaran titik-titik objek pajak yang muncul setelah parameter filter diterapkan.
+            \end{itemize}
     \end{itemize}
+
 
     \item Rancangan Komparasi Realisasi Pajak \\
     Penyajian data rekapitulasi kinerja (Gambar \ref{fig:wireframe-realisasi-pajak}) difokuskan pada perbandingan target vs realisasi.

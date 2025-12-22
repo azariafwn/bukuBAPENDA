@@ -1,14 +1,14 @@
 \section{ASP .NET}
 \label{sec:aspnet}
 
-ASP.NET adalah salah satu teknologi terbaru di dunia web yang memungkinkan sebuah halaman web bersifat dinamis dan menciptakan komunikasi dua arah (twoway communication) antara client dan server \cite{constantianus2015simta}. ASP.NET merupakan hasil pengembangan lebih dalam dari ASP (Active Server Page) oleh Microsoft. ASP.NET dikembangkan oleh Microsoft yang di-release pertama kali pada Januari 2002 dan berlisensi open source. Framework ini dibangun menggunakan CLR (Common Language Runtime) dan dapat menulis code untuk ASP.NET menggunakan bahasa pemrograman berbasis .NET seperti C\# dan Visual Basic \cite{juyuspan2017aspnetmvc}.
+ASP.NET adalah salah satu teknologi terbaru di dunia web yang memungkinkan sebuah halaman web bersifat dinamis dan menciptakan komunikasi dua arah (\emph{two way communication}) antara \emph{client} dan \emph{server} \cite{constantianus2015simta}. ASP.NET merupakan hasil pengembangan lebih dalam dari ASP (\emph{Active Server Page}) oleh Microsoft. ASP.NET dikembangkan oleh Microsoft yang di-\emph{release} pertama kali pada Januari 2002 dan berlisensi \emph{open source}. \emph{Framework} ini dibangun menggunakan CLR (\emph{Common Language Runtime}) dan dapat menulis kode untuk ASP.NET menggunakan bahasa pemrograman berbasis .NET seperti C\# dan Visual Basic \cite{juyuspan2017aspnetmvc}.
 
-Framework yang dikembangkan oleh Microsoft ini mengimplementasikan arsitektur MVC (Model-View-Controller) dalam membangun aplikasi \cite{christanto2020aspnet}. Arsitektur MVC memisahkan pengembangan aplikasi menjadi tiga komponen utama yang saling berhubungan:
+\emph{Framework} yang dikembangkan oleh Microsoft ini mengimplementasikan arsitektur MVC (\emph{Model-View-Controller}) dalam membangun aplikasi \cite{christanto2020aspnet}. Arsitektur MVC memisahkan pengembangan aplikasi menjadi tiga komponen utama yang saling berhubungan:
 
 \begin{itemize}
-    \item Model: Bagian ini merepresentasikan data dan logika bisnis aplikasi. Model bertanggung jawab penuh atas aturan, validasi, dan manipulasi data. Ia tidak memiliki pengetahuan langsung tentang bagaimana data akan ditampilkan.
-    \item View: Komponen ini bertanggung jawab untuk menampilkan data kepada pengguna. View menerima data dari Controller dan menampilkannya dalam format antarmuka (UI) yang sesuai. Pada dasarnya, View adalah templat HTML yang disisipi dengan data dari Model.
-    \item Controller: Berperan sebagai jembatan antara Model dan View. Controller menerima input dari pengguna (misalnya, klik tombol atau permintaan URL), berkomunikasi dengan Model untuk memproses permintaan tersebut, lalu memilih View mana yang akan ditampilkan kembali kepada pengguna.
+    \item \emph{Model}: Bagian ini merepresentasikan data dan logika bisnis aplikasi. \emph{Model} bertanggung jawab penuh atas aturan, validasi, dan manipulasi data. Ia tidak memiliki pengetahuan langsung tentang bagaimana data akan ditampilkan.
+    \item \emph{View}: Komponen ini bertanggung jawab untuk menampilkan data kepada pengguna. \emph{View} menerima data dari \emph{Controller} dan menampilkannya dalam format antarmuka (UI) yang sesuai. Pada dasarnya, \emph{View} adalah templat HTML yang disisipi dengan data dari \emph{Model}.
+    \item \emph{Controller}: Berperan sebagai jembatan antara \emph{Model} dan \emph{View}. \emph{Controller} menerima input dari pengguna (misalnya, klik tombol atau permintaan URL), berkomunikasi dengan \emph{Model} untuk memproses permintaan tersebut, lalu memilih \emph{View} mana yang akan ditampilkan kembali kepada pengguna.
 \end{itemize}
 
 Penerapan pola MVC membuat kode program menjadi lebih terstruktur, modular, dan mudah untuk diuji serta dipelihara, yang sangat cocok untuk proyek berskala besar seperti MonPD Reborn.

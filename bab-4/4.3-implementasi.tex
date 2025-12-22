@@ -1,7 +1,7 @@
 \section{Implementasi}
 \label{sec:implementasi}
 
-Tahap implementasi merupakan proses penerjemahan rancangan arsitektur dan kebutuhan fungsional ke dalam kode program yang berjalan. Pengembangan sistem MonPD Reborn dilakukan dengan menggunakan framework ASP.NET Core MVC dan bahasa pemrograman C\#. Penulis berperan penuh dalam pembangunan Application Layer (back-end) dan Presentation Layer (front-end) untuk memastikan sistem dapat mengolah data perpajakan dari database Oracle secara efisien.
+Tahap implementasi merupakan proses penerjemahan rancangan arsitektur dan kebutuhan fungsional ke dalam kode program yang berjalan. Pengembangan sistem MonPD Reborn dilakukan dengan menggunakan \emph{framework} ASP.NET Core MVC dan bahasa pemrograman C\#. Penulis berperan penuh dalam pembangunan \emph{Application Layer} (\emph{back-end}) dan \emph{Presentation Layer} (\emph{front-end}) untuk memastikan sistem dapat mengolah data perpajakan dari \emph{database} Oracle secara efisien.
 
 \subsection{Alur Kerja Aplikasi}
 \begin{figure}[H]
@@ -38,25 +38,46 @@ Tahap implementasi merupakan proses penerjemahan rancangan arsitektur dan kebutu
 
 Sistem MonPD Reborn dirancang untuk meminimalkan waktu tunggu pengguna melalui mekanisme pemuatan data asinkron. Berbeda dengan sistem lama yang memuat seluruh data secara sekaligus, alur kerja sistem ini dibagi menjadi beberapa tahapan sebagai berikut:
 \begin{enumerate}
-    \item \textbf{Pemuatan Kerangka (Initial Load)}: Saat pengguna mengakses menu, browser hanya memuat struktur HTML dasar (Razor View) tanpa data. Hal ini membuat halaman terasa instan saat dibuka.
-    \item \textbf{Permintaan Data (AJAX Request)}: Setelah kerangka siap, fungsi JavaScript (jQuery) secara otomatis mengirimkan permintaan ke Action Method di Controller di latar belakang.
-    \item \textbf{Pengolahan Data (Back-end Processing)}: Controller memanggil method di dalam ViewModel untuk berinteraksi dengan database Oracle melalui Entity Framework Core.
-    \item \textbf{Pengembalian Hasil (Response)}: Server mengembalikan data dalam format Partial View atau JSON.
-    \item \textbf{Perenderaan Dinamis (Client-side Rendering)}: Komponen DevExtreme DataGrid menerima data tersebut dan menampilkannya kepada pengguna tanpa perlu melakukan penyegaran halaman (refresh).
+    \item \textbf{Pemuatan Kerangka (\emph{Initial Load})}: Saat pengguna mengakses menu, browser hanya memuat struktur HTML dasar (\emph{Razor View}) tanpa data. Hal ini membuat halaman terasa instan saat dibuka.
+    \item \textbf{Permintaan Data (\emph{AJAX Request})}: Setelah kerangka siap, fungsi JavaScript (jQuery) secara otomatis mengirimkan permintaan ke \emph{Action Method} di \emph{Controller} di latar belakang.
+    \item \textbf{Pengolahan Data (\emph{Back-end Processing})}: \emph{Controller} memanggil \emph{method} di dalam \emph{ViewModel} untuk berinteraksi dengan \emph{database} Oracle melalui Entity Framework Core.
+    \item \textbf{Pengembalian Hasil (\emph{Response})}: Server mengembalikan data dalam format \emph{Partial View} atau JSON.
+    \item \textbf{Perenderaan Dinamis (\emph{Client-side Rendering})}: Komponen DevExtreme DataGrid menerima data tersebut dan menampilkannya kepada pengguna tanpa perlu melakukan penyegaran halaman (\emph{refresh}).
 \end{enumerate}
 
 Mekanisme ini memungkinkan halaman terasa instan saat dibuka karena \emph{browser} tidak perlu menunggu seluruh data dari \emph{database} Oracle selesai ditarik sebelum menampilkan antarmuka.
 
 \subsection{Pengembangan Application Layer (Backend)}
-Penulis menerapkan pola arsitektur Fat ViewModel dan Thin Controller. Pendekatan ini bertujuan untuk memusatkan seluruh logika bisnis, pemfilteran, dan agregasi data di dalam ViewModel, sehingga Controller tetap ramping dan hanya berfungsi sebagai pengatur alur permintaan.
+Pada proyek ini, diterapkan pola arsitektur \emph{Fat ViewModel} dan \emph{Thin Controller}. Pendekatan ini bertujuan untuk memusatkan seluruh logika bisnis, pemfilteran, dan agregasi data di dalam \emph{ViewModel}, sehingga \emph{Controller} tetap ramping dan hanya berfungsi sebagai pengatur alur permintaan.
+
 \begin{enumerate}
-    \item Struktur ViewModel: Setiap modul memiliki ViewModel khusus, seperti ReklameLiarVM. Di dalamnya terdapat berbagai kelas seperti Index, Show, dan Detail untuk melayani kebutuhan data yang spesifik.
-    \item Logika Pengambilan Data: Penulis membangun method seperti GetDataRekapWPList() untuk menangani filter dinamis dan memanggil Stored Procedure yang disediakan oleh tim database Bapenda.
-    \item Enkapsulasi Logika: Seluruh kalkulasi persentase pencapaian dan perbandingan target vs realisasi dilakukan di sisi server sebelum dikirim ke front-end untuk menjaga konsistensi data.
+    \item \textbf{Struktur \emph{ViewModel} dan \emph{Controller}:} 
+    Implementasi pola \emph{Thin Controller} ditunjukkan pada Kode 4.1, di mana \\ \texttt{PemeriksaanController} hanya bertugas menerima \emph{request}, melakukan instansiasi \emph{ViewModel}, dan mengembalikan \emph{Partial View}.
+    
+    \lstinputlisting[language={[Sharp]C}, caption={Implementasi \emph{Thin Controller} pada \texttt{PemeriksaanController.cs}}]{program/PemeriksaanController.cs}
+
+    Penjelasan Kode 4.1: \emph{Action method} \texttt{Detail} menerima parameter \texttt{jenisPajak} dan \texttt{tahun}. Fungsi utama dari kode ini adalah memanggil kelas \emph{ViewModel} \texttt{Detail} dan menangani \emph{error handling} melalui blok \texttt{try-catch} untuk memastikan stabilitas aplikasi jika terjadi kegagalan sistem.
+
+    \item \textbf{Logika Pengambilan Data (Fat ViewModel):} 
+    Seluruh logika manipulasi data dipusatkan di dalam \\ \texttt{PemeriksaanVM.cs} seperti yang ditunjukkan pada Kode 4.2.
+    
+    \lstinputlisting[language={[Sharp]C}, caption={Logika Bisnis pada \emph{Fat ViewModel} \texttt{PemeriksaanVM.cs}}]{program/PemeriksaanVM.cs}
+
+    Penjelasan Kode 4.2: Penulis menggunakan \emph{Entity Framework Core} untuk mengambil data dari tabel \texttt{TPemeriksaan}. Teknik optimasi kunci yang diterapkan adalah penggunaan \texttt{GroupBy} dan \texttt{ToDictionary} untuk melakukan pemetaan data \emph{master} objek pajak di dalam memori (\emph{in-memory mapping}). Hal ini dilakukan untuk menghindari operasi \emph{join} tabel yang berat di sisi \emph{database} Oracle, sehingga proses pencocokan nama Wajib Pajak berdasarkan NOP menjadi jauh lebih cepat.
+
+    \item \textbf{Enkapsulasi Logika:} 
+    Seluruh kalkulasi persentase pencapaian dan perbandingan target vs realisasi dilakukan di sisi \emph{server} sebelum dikirim ke \emph{front-end} guna menjaga konsistensi data dan meringankan beban komputasi di sisi \emph{client}.    
+
+    \item \textbf{Implementasi AJAX (\emph{Frontend}):} 
+    Untuk mengatasi masalah performa sistem lama, penulis mengimplementasikan fungsi asinkron menggunakan \emph{jQuery} sebagaimana ditunjukkan pada Kode 4.3.
+    
+    \lstinputlisting[language={JavaScript}, caption={Implementasi AJAX Request pada \texttt{PemeriksaanAJAX.js}}]{program/PemeriksaanAJAX.js}
+
+    Penjelasan Kode 4.3: Fungsi \texttt{loadDetail} mengirimkan data permintaan ke \emph{Controller} di latar belakang. Penggunaan \texttt{beforeSend} berfungsi untuk menampilkan \emph{loading spinner} (\texttt{\#loading2-Detail}) sebagai indikator visual kepada pengguna bahwa data sedang diproses. Setelah data diterima (\emph{success}), hasilnya langsung dirender ke dalam elemen \texttt{\#Detail} tanpa perlu memuat ulang seluruh halaman web. Teknik ini berhasil mereduksi waktu muat secara drastis dari $\pm 120$ detik menjadi hanya $\pm 3 - 5$ detik.
 \end{enumerate}
 
 \subsection{Pengembangan \emph{Presentation Layer} (\emph{Frontend})}
-Pada lapisan presentasi, penulis fokus pada pembangunan antarmuka yang responsif dan interaktif menggunakan jQuery dan toolkit DevExtreme.
+Pada \emph{Presentation Layer} (\emph{Frontend}), penulis fokus pada pembangunan antarmuka yang responsif dan interaktif menggunakan jQuery dan \emph{toolkit} DevExtreme.
 \begin{enumerate}
     \item \textbf{Implementasi AJAX:} Penulis menulis fungsi \emph{JavaScript} seperti \texttt{fnShow()} untuk memicu pemuatan tabel secara asinkron. Teknik ini berhasil mereduksi waktu muat dari $\pm 120$ detik menjadi hanya $\pm 3 - 5$ detik.
     \item \textbf{Konfigurasi \emph{DevExtreme DataGrid}:} Komponen ini dikonfigurasi untuk menangani volume data besar dengan fitur \emph{server-side paging}. Penulis juga mengimplementasikan \emph{Banded Columns} untuk mengelompokkan data yang berkaitan, seperti kolom ``Pokok'' dan ``Sanksi'' di bawah kategori tahun yang sama.
@@ -67,23 +88,26 @@ Pada lapisan presentasi, penulis fokus pada pembangunan antarmuka yang responsif
 \subsection{Hasil Implementasi Fitur Utama}
 Berikut adalah hasil dari implementasi kode program yang telah dilakukan:
 \begin{itemize}
-    \item Dashboard Analitik Utama: Tampilan pusat komando yang menyajikan KPI (Key Performance Indicator) secara instan untuk setiap jenis pajak ditunjukkan pada gambar \ref{fig:dashboard-utama-monpd}.
+    \item Dashboard Analitik Utama: \\
+    Tampilan pusat komando yang menyajikan KPI (\emph{Key Performance Indicator}) secara instan untuk setiap jenis pajak ditunjukkan pada gambar \ref{fig:dashboard-utama-monpd}.
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.95\textwidth]{gambar/dashboard-utama-monpd.png}
-        \caption{Tampilan Dashboard Utama MonPD Reborn}
+        \caption{Tampilan \emph{Dashboard} Utama MonPD Reborn}
         \label{fig:dashboard-utama-monpd}
     \end{figure}
 
-    \item Template Modul Analitik: Standar tampilan yang memisahkan antara panel filter, ringkasan KPI, dan tabel rincian diimplementasikan pada seluruh modul, seperti yang terlihat pada gambar \ref{fig:dashboard-menu-monpd}.
+    \item Template Modul Analitik: \\
+    Standar tampilan yang memisahkan antara panel filter, ringkasan KPI, dan tabel rincian diimplementasikan pada seluruh modul, seperti yang terlihat pada gambar \ref{fig:dashboard-menu-monpd}.
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.55\textwidth]{gambar/dashboard-menu-monpd.png}
-        \caption{Tampilan Dashboard Menu MonPD Reborn}
+        \caption{Tampilan \emph{Dashboard} Menu MonPD Reborn}
         \label{fig:dashboard-menu-monpd}
     \end{figure}
 
-    \item Interaktivitas Data: Fitur filter per kolom, pencarian instan, dan pengurutan data pada komponen DataGrid ditunjukkan pada gambar \ref{fig:datagrid}.
+    \item Interaktivitas Data: \\
+    Fitur filter per kolom, pencarian instan, dan pengurutan data pada komponen DataGrid ditunjukkan pada gambar \ref{fig:datagrid}.
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.99\textwidth]{gambar/datagrid.png}
@@ -91,15 +115,17 @@ Berikut adalah hasil dari implementasi kode program yang telah dilakukan:
         \label{fig:datagrid}
     \end{figure}
 
-    \item Detail Pop-up (Drill-down): Mekanisme pemuatan data detail tanpa kehilangan konteks halaman utama menggunakan modal asinkron ditunjukkan pada gambar \ref{fig:popup-detail}.
+    \item Detail \emph{Pop-up} (\emph{Drill-down}): \\
+    Mekanisme pemuatan data detail tanpa kehilangan konteks halaman utama menggunakan modal asinkron ditunjukkan pada gambar \ref{fig:popup-detail}.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.69\textwidth]{gambar/popup-detail.png}
-        \caption{Implementasi Detail Pop-up pada MonPD Reborn}
+        \includegraphics[width=0.67\textwidth]{gambar/popup-detail.png}
+        \caption{Implementasi Detail \emph{Pop-up} pada MonPD Reborn}
         \label{fig:popup-detail}
     \end{figure}
 
-    \item Visualisasi Geospasial: Plot lokasi objek pajak di atas peta Kota Surabaya untuk analisis potensi kewilayahan ditunjukkan pada gambar \ref{fig:geospasial}.
+    \item Visualisasi Geospasial: \\
+    Plot lokasi objek pajak di atas peta Kota Surabaya untuk analisis potensi kewilayahan ditunjukkan pada gambar \ref{fig:geospasial}.
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.76\textwidth]{gambar/geospasial.png}
@@ -107,7 +133,8 @@ Berikut adalah hasil dari implementasi kode program yang telah dilakukan:
         \label{fig:geospasial}
     \end{figure}
 
-    \item Tabel Rekapitulasi Kinerja: Penyajian perbandingan target dan realisasi yang dilengkapi dengan progress bar otomatis ditunjukkan pada gambar \ref{fig:realisasi-pajak}.
+    \item Tabel Rekapitulasi Kinerja: \\
+    Penyajian perbandingan target dan realisasi yang dilengkapi dengan \emph{progress bar} otomatis ditunjukkan pada gambar \ref{fig:realisasi-pajak}.
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.93\textwidth]{gambar/realisasi-pajak.png}

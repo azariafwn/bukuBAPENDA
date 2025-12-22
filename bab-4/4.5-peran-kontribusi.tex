@@ -1,31 +1,54 @@
 \section{Peran dan Kontribusi Penulis}
 \label{sec:perankontribusi}
 
-Selama pelaksanaan proyek Pengembangan Sistem Monitoring Pendapatan Daerah (MonPD Reborn), penulis berperan sebagai Full-Stack Developer yang berfokus pada arsitektur Model-View-Controller (MVC) dalam framework ASP.NET Core. Kontribusi utama penulis mencakup perancangan dan implementasi di dua lapisan utama: Presentation Layer (Front-End) dan Application Layer (Back-End).
+Pelaksanaan magang di Badan Pendapatan Daerah (Bapenda) Kota Surabaya memberikan ruang bagi penulis untuk berperan aktif dalam seluruh siklus pengembangan sistem \emph{MonPD Reborn}. Sebagai seorang \emph{Full-Stack Developer}, kontribusi penulis tidak hanya terbatas pada pembangunan infrastruktur logika, namun juga mencakup perancangan pengalaman pengguna (\emph{User Experience}) yang bermakna. Penulis berfokus pada transformasi data mentah menjadi informasi yang memiliki nilai analitik (\emph{insightful}), memastikan bahwa setiap elemen visual yang ditampilkan mampu mempermudah pegawai Bapenda dalam melakukan pengolahan dan pengambilan keputusan berbasis data secara instan.
+
+\subsection{Batasan Peran dan Kontribusi}
+Selama pelaksanaan proyek Pengembangan Sistem Monitoring Pendapatan Daerah (MonPD Reborn), penulis berperan sebagai \emph{Full-Stack Developer} yang berfokus pada arsitektur \emph{Model} - \emph{View} - \emph{Controller} (MVC) dalam \emph{framework} ASP.NET Core. Kontribusi utama penulis mencakup perancangan dan implementasi di dua lapisan utama: \emph{Presentation Layer} (\emph{Front-End}) dan \emph{Application Layer} (\emph{Back-End}).
 
 \begin{enumerate}
-    \item Kontribusi pada Application Layer (Back-End): \\
-    Penulis bertanggung jawab penuh atas seluruh logika bisnis dan alur data di sisi server aplikasi. Ini mencakup:
+    \item Kontribusi pada \emph{Application Layer} (\emph{Back-End}): \\
+    Penulis bertanggung jawab penuh atas seluruh logika bisnis dan alur data di sisi (\emph{Back-End}) aplikasi. Ini mencakup:
     \begin{itemize}
-        \item Merancang dan mengimplementasikan arsitektur Fat ViewModel, Thin Controller menggunakan bahasa C\#.
-        \item Membangun kelas-kelas ViewModel yang berfungsi sebagai "cetakan" data untuk setiap halaman. Di dalam method ViewModel inilah seluruh logika bisnis, pemfilteran, dan agregasi data diimplementasikan.
-        \item Membuat Controller yang ramping (thin) yang hanya bertugas menerima permintaan HTTP dari pengguna dan memanggil method yang sesuai di dalam ViewModel.
+        \item Merancang dan mengimplementasikan arsitektur \emph{Fat ViewModel}, \emph{Thin Controller} menggunakan bahasa C\#.
+        \item Membangun kelas-kelas \emph{ViewModel} yang berfungsi sebagai "cetakan" data untuk setiap halaman. Di dalam \emph{method ViewModel} inilah seluruh logika bisnis, pemfilteran, dan agregasi data diimplementasikan.
+        \item Membuat \emph{Controller} yang ramping (\emph{thin}) yang hanya bertugas menerima permintaan HTTP dari pengguna dan memanggil \emph{method} yang sesuai di dalam \emph{ViewModel}.
     \end{itemize}
 
-    \item Kontribusi pada Presentation Layer (Front-End): \\
-    Penulis juga bertanggung jawab untuk menerjemahkan rancangan antarmuka (UI/UX) menjadi halaman web yang fungsional, interaktif, dan responsif. Ini mencakup:
+    \item Kontribusi pada \emph{Presentation Layer} (\emph{Front-End}): \\
+    Penulis juga bertanggung jawab untuk menerjemahkan rancangan antarmuka (UI/UX) menjadi halaman web yang fungsional, interaktif, dan responsif. Penulis bertanggung jawab untuk mentransformasi rancangan antarmuka menjadi sistem pemantauan yang mampu menyajikan \emph{insight} bagi pengguna. Fokus utama pada lapisan ini adalah memastikan data yang kompleks dapat dibaca secara intuitif untuk kebutuhan analisis strategis. Hal ini mencakup:
     \begin{itemize}
-        \item Membangun struktur halaman menggunakan HTML dan Razor Views (.cshtml).
+        \item Membangun struktur halaman menggunakan HTML dan \emph{Razor Views} (\texttt{.cshtml}) dengan menerapkan \emph{information hierarchy} agar metrik-metrik penting terlihat lebih menonjol.
         \item Mengimplementasikan seluruh interaktivitas pengguna, terutama fitur pemuatan data asinkron AJAX menggunakan jQuery, yang menjadi solusi utama atas masalah performa sistem.
-        \item Mengintegrasikan dan mengkonfigurasi komponen UI canggih dari DevExtreme, seperti DataGrid (untuk banded columns, filtering, paging) dan komponen dashboard.
+        \item Mengintegrasikan dan mengkonfigurasi komponen UI canggih dari DevExtreme, seperti DataGrid (untuk \emph{banded columns}, \emph{filtering}, \emph{paging}) dan komponen \emph{dashboard}.
+        \item Pembuatan \emph{dashboard} analitik yang memungkinkan pegawai melakukan \emph{drill-down} untuk menemukan anomali atau tren pendapatan secara mandiri.
     \end{itemize}
-
-    \item Batasan Peran dan Kolaborasi: \\
-    Sesuai dengan pembagian peran yang telah ditetapkan oleh tim IT Bapenda, peran penulis difokuskan penuh pada pengembangan aplikasi (front-end dan back-end) dan tidak mencakup administrasi atau perancangan skema database.
-    
-    Alur kerja kolaborasinya adalah sebagai berikut: Tim database Bapenda bertanggung jawab untuk menyediakan akses data, umumnya dalam bentuk stored procedures atau query yang sudah tervalidasi dan dioptimalkan di sisi server Oracle.
-    
-    Tugas penulis adalah memanggil stored procedures atau fungsi tersebut dari dalam kode C\# (di Application Layer), menerima hasilnya (dalam bentuk variabel), dan kemudian mengelola, memanipulasi, dan memformat data tersebut di dalam ViewModel agar siap untuk dikonsumsi dan ditampilkan secara efisien oleh Front-End.
 \end{enumerate}
 
-Secara ringkas, peran penulis adalah sebagai jembatan utama yang menghubungkan data mentah yang disediakan oleh tim database dengan antarmuka analitik interaktif yang digunakan oleh pegawai Bapenda, dengan fokus utama pada optimalisasi performa dan logika bisnis di application layer.
+\subsubsection{Alur Kolaborasi Pengembangan}
+
+Untuk menjamin integritas data dan efisiensi pengembangan, pembagian peran antara tim \emph{database} Bapenda dan penulis diatur melalui alur kerja kolaboratif. Penulis bertanggung jawab penuh pada seluruh proses di sisi aplikasi (\emph{full-stack}), mulai dari pengambilan data hingga perenderaan antarmuka, sebagaimana digambarkan pada Gambar 4.13:
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=2cm, transform shape, scale=0.9]
+        % Porsi Tim Database
+        \node (db1) [dbteam] {\textbf{Tim Database Bapenda (Oracle Server)}\\Penyediaan \emph{Stored Procedures} atau \emph{Query} yang tervalidasi dan optimal};
+        
+        % Porsi Penulis (Warna berbeda)
+        \node (auth1) [author, below of=db1] {\textbf{Penulis (Application Layer)}\\Pemanggilan fungsi/\emph{Stored Procedure} melalui kode C\# menggunakan EF Core};
+        \node (auth2) [author, below of=auth1] {\textbf{Penulis (ViewModel)}\\Pengolahan, manipulasi, dan \emph{formatting} data agar siap dikonsumsi \emph{View}};
+        \node (auth3) [author, below of=auth2] {\textbf{Penulis (Presentation Layer)}\\Perenderaan data secara dinamis ke dalam \emph{View} (\texttt{.cshtml}) menggunakan \emph{DevExtreme}};
+
+        % Garis Panah
+        \draw [arrow] (db1) -- (auth1);
+        \draw [arrow] (auth1) -- (auth2);
+        \draw [arrow] (auth2) -- (auth3);
+    \end{tikzpicture}
+    \caption{Alur Kolaborasi dan Batasan Kontribusi Penulis}
+    \label{fig:alur_kolaborasi}
+\end{figure}
+
+Berdasarkan alur di atas, kontribusi penulis tidak hanya terbatas pada \emph{Application Layer} (pengolahan logika di \emph{ViewModel}), tetapi mencakup seluruh siklus penyajian data di \emph{Presentation Layer}. Hal ini meliputi penulisan skrip \emph{JavaScript/jQuery} untuk pengambilan data asinkron hingga memastikan komponen DevExtreme menampilkan data secara akurat di sisi pengguna (\emph{client-side}).
+
+Secara ringkas, peran penulis adalah sebagai jembatan utama yang mengubah kompleksitas data di server Oracle menjadi antarmuka analitik yang interaktif. Penulis memastikan bahwa setiap fitur yang dikembangkan tidak hanya berfungsi secara teknis, tetapi juga memberikan kemudahan operasional bagi pegawai Bapenda dalam mengawal optimalisasi pendapatan daerah.

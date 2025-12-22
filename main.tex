@@ -41,6 +41,8 @@
 \usepackage{tabularx}
 \usepackage{array}
 \usepackage{float}
+\usepackage[T1]{fontenc} % Memperbaiki masalah tanda kutip dan karakter spesial
+\usepackage{textcomp}    % Mendukung simbol tambahan
 
 
 \usepackage{tikz}
@@ -49,6 +51,10 @@
 % Pengaturan gaya kotak diagram yang lebih lebar
 \tikzstyle{startstop} = [rectangle, rounded corners, minimum width=8cm, minimum height=0.8cm, text centered, draw=black, fill=red!20]
 \tikzstyle{process} = [rectangle, minimum width=9cm, minimum height=1cm, text centered, text width=8.5cm, draw=black, fill=orange!20]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\tikzstyle{dbteam} = [rectangle, minimum width=9cm, minimum height=1cm, text centered, text width=8.5cm, draw=black, fill=gray!20]
+\tikzstyle{author} = [rectangle, minimum width=9cm, minimum height=1cm, text centered, text width=8.5cm, draw=black, fill=cyan!30]
 \tikzstyle{arrow} = [thick,->,>=stealth]
 
 % Definisi untuk "Hati ini sengaja dikosongkan"
@@ -108,6 +114,24 @@
   tabsize=2,
 }
 \lstset{style=codestyle}
+
+% Definisi Bahasa JavaScript untuk listings
+\lstdefinelanguage{JavaScript}{
+  keywords={break, case, catch, continue, debugger, default, delete, do, else, false, finally, for, function, if, in, instanceof, new, null, return, switch, this, throw, true, try, typeof, var, void, while, with},
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  commentstyle=\color{comment}\ttfamily,
+  stringstyle=\color{string}\ttfamily,
+}
+
+
 
 % Isi keseluruhan dokumen
 \begin{document}
