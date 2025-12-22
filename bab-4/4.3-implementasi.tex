@@ -14,16 +14,16 @@ Tahap implementasi merupakan proses penerjemahan rancangan arsitektur dan kebutu
         \node (step1) [process, below of=start] {\textbf{1. Pemuatan Kerangka}\\Memuat struktur HTML dasar (\emph{Razor View})};
         
         % Tahap 2: AJAX Request
-        \node (step2) [process, below of=step1] {\textbf{2. Permintaan Data}\\Fungsi \emph{jQuery} memicu \emph{AJAX Request} asinkron};
+        \node (step2) [process, below of=step1] {\textbf{2. Permintaan Data}\\Fungsi jQuery memicu \emph{AJAX Request} asinkron};
         
         % Tahap 3: Back-end Processing
-        \node (step3) [process, below of=step2] {\textbf{3. Pengolahan Data}\\Controller memanggil ViewModel $\rightarrow$ Oracle via EF Core};
+        \node (step3) [process, below of=step2] {\textbf{3. Pengolahan Data}\\ \emph{Controller} memanggil \emph{Method} VM $\rightarrow$ Oracle via EF Core};
         
         % Tahap 4: Response
         \node (step4) [process, below of=step3] {\textbf{4. Pengembalian Hasil}\\Server mengirim data (\emph{JSON / Partial View})};
         
         % Tahap 5: Client-side Rendering
-        \node (step5) [process, below of=step4] {\textbf{5. Perenderaan Dinamis}\\Data dirender ke \emph{DevExtreme DataGrid}};
+        \node (step5) [process, below of=step4] {\textbf{5. Perenderaan Dinamis}\\Data dirender ke DevExtreme DataGrid};
 
         % Garis Panah
         \draw [arrow] (start) -- (step1);
@@ -38,16 +38,16 @@ Tahap implementasi merupakan proses penerjemahan rancangan arsitektur dan kebutu
 
 Sistem MonPD Reborn dirancang untuk meminimalkan waktu tunggu pengguna melalui mekanisme pemuatan data asinkron. Berbeda dengan sistem lama yang memuat seluruh data secara sekaligus, alur kerja sistem ini dibagi menjadi beberapa tahapan sebagai berikut:
 \begin{enumerate}
-    \item \textbf{Pemuatan Kerangka (\emph{Initial Load})}: Saat pengguna mengakses menu, browser hanya memuat struktur HTML dasar (\emph{Razor View}) tanpa data. Hal ini membuat halaman terasa instan saat dibuka.
+    \item \textbf{Pemuatan Kerangka (\emph{Initial Load})}: Saat pengguna mengakses menu, \emph{browser} hanya memuat struktur HTML dasar (\emph{Razor View}) tanpa data. Hal ini membuat halaman terasa instan saat dibuka.
     \item \textbf{Permintaan Data (\emph{AJAX Request})}: Setelah kerangka siap, fungsi JavaScript (jQuery) secara otomatis mengirimkan permintaan ke \emph{Action Method} di \emph{Controller} di latar belakang.
-    \item \textbf{Pengolahan Data (\emph{Back-end Processing})}: \emph{Controller} memanggil \emph{method} di dalam \emph{ViewModel} untuk berinteraksi dengan \emph{database} Oracle melalui Entity Framework Core.
-    \item \textbf{Pengembalian Hasil (\emph{Response})}: Server mengembalikan data dalam format \emph{Partial View} atau JSON.
+    \item \textbf{Pengolahan Data (\emph{Back-end Processing})}: \emph{Controller} memanggil \emph{method} statis di dalam \emph{ViewModel} yang kemudian bertugas melakukan kueri dan berinteraksi dengan \emph{database} Oracle melalui \emph{Entity Framework Core}.
+    \item \textbf{Pengembalian Hasil (\emph{Response})}: Server mengembalikan data hasil olahan tersebut dalam format \emph{Partial View} atau JSON.
     \item \textbf{Perenderaan Dinamis (\emph{Client-side Rendering})}: Komponen DevExtreme DataGrid menerima data tersebut dan menampilkannya kepada pengguna tanpa perlu melakukan penyegaran halaman (\emph{refresh}).
 \end{enumerate}
 
 Mekanisme ini memungkinkan halaman terasa instan saat dibuka karena \emph{browser} tidak perlu menunggu seluruh data dari \emph{database} Oracle selesai ditarik sebelum menampilkan antarmuka.
 
-\subsection{Pengembangan Application Layer (Backend)}
+\subsection{Pengembangan \emph{Application Layer} (\emph{Backend})}
 Pada proyek ini, diterapkan pola arsitektur \emph{Fat ViewModel} dan \emph{Thin Controller}. Pendekatan ini bertujuan untuk memusatkan seluruh logika bisnis, pemfilteran, dan agregasi data di dalam \emph{ViewModel}, sehingga \emph{Controller} tetap ramping dan hanya berfungsi sebagai pengatur alur permintaan.
 
 \begin{enumerate}
@@ -73,7 +73,7 @@ Pada proyek ini, diterapkan pola arsitektur \emph{Fat ViewModel} dan \emph{Thin 
     
     \lstinputlisting[language={JavaScript}, caption={Implementasi AJAX Request pada \texttt{PemeriksaanAJAX.js}}]{program/PemeriksaanAJAX.js}
 
-    Penjelasan Kode 4.3: Fungsi \texttt{loadDetail} mengirimkan data permintaan ke \emph{Controller} di latar belakang. Penggunaan \texttt{beforeSend} berfungsi untuk menampilkan \emph{loading spinner} (\texttt{\#loading2-Detail}) sebagai indikator visual kepada pengguna bahwa data sedang diproses. Setelah data diterima (\emph{success}), hasilnya langsung dirender ke dalam elemen \texttt{\#Detail} tanpa perlu memuat ulang seluruh halaman web. Teknik ini berhasil mereduksi waktu muat secara drastis dari $\pm 120$ detik menjadi hanya $\pm 3 - 5$ detik.
+    Penjelasan Kode 4.3: Fungsi \texttt{loadDetail} mengirimkan data permintaan ke \emph{Controller} di latar belakang. Penggunaan \texttt{beforeSend} berfungsi untuk menampilkan \emph{loading spinner} (\texttt{\#loading2-Detail}) sebagai indikator visual kepada pengguna bahwa data sedang diproses. Setelah data diterima (\emph{success}), hasilnya langsung dirender ke dalam elemen \texttt{\#Detail} tanpa perlu memuat ulang seluruh halaman web. Teknik ini berhasil mereduksi waktu muat secara drastis.
 \end{enumerate}
 
 \subsection{Pengembangan \emph{Presentation Layer} (\emph{Frontend})}
