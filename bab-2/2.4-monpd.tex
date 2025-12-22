@@ -1,0 +1,17 @@
+\section{MonPD}
+\label{sec:monpd}
+
+MonPD, atau Sistem Monitoring Pendapatan Daerah, adalah sebuah sistem informasi internal yang dimiliki oleh Badan Pendapatan Daerah (Bapenda) Kota Surabaya. Sistem ini dirancang sebagai alat bantu utama bagi pegawai dan pimpinan Bapenda dalam melaksanakan fungsi pengawasan (monitoring) terhadap realisasi penerimaan Pajak Daerah. Fungsi utama dari sistem ini adalah untuk menyajikan data transaksi wajib pajak, memantau setoran pajak, serta menjadi basis data untuk kegiatan pemeriksaan dan penagihan.
+
+Pada kondisi yang ada sekarang (current condition), MonPD versi terdahulu (legacy) dibangun menggunakan teknologi web konvensional yang masih sangat bergantung pada pemrosesan data secara sinkron (synchronous). Dalam operasional hariannya, sistem ini menghadapi kendala teknis yang cukup signifikan, antara lain:
+
+\begin{enumerate}
+    \item Arsitektur Data yang Kurang Optimal: \\
+    Struktur basis data pada sistem lama belum terorganisir dengan efisien untuk menangani volume data transaksi pajak yang terus bertambah besar.
+    \item Mekanisme Pemuatan Data (Data Loading): \\
+    Sistem menerapkan pendekatan load data yang tidak efisien, di mana seluruh dataset (ribuan baris data) dimuat secara serentak pada saat halaman pertama kali dibuka. Hal ini menyebabkan beban server menjadi berat dan transfer data (payload) menjadi sangat besar.
+    \item Isu Performa: \\
+    Akibat dari mekanisme tersebut, waktu tunggu (loading time) untuk membuka satu halaman rekapitulasi bisa mencapai ±120 detik. Kelambatan ini sering kali menghambat produktivitas pegawai dalam melakukan analisis cepat dan pengambilan keputusan di lapangan.
+\end{enumerate}
+
+Meskipun secara fungsional sistem ini mampu menampilkan data, namun kendala performa tersebut menuntut adanya peremajaan teknologi yang mendesak agar dapat mengimbangi kebutuhan Bapenda akan data yang real-time dan responsif.

@@ -1,0 +1,118 @@
+\section{Implementasi}
+\label{sec:implementasi}
+
+Tahap implementasi merupakan proses penerjemahan rancangan arsitektur dan kebutuhan fungsional ke dalam kode program yang berjalan. Pengembangan sistem MonPD Reborn dilakukan dengan menggunakan framework ASP.NET Core MVC dan bahasa pemrograman C\#. Penulis berperan penuh dalam pembangunan Application Layer (back-end) dan Presentation Layer (front-end) untuk memastikan sistem dapat mengolah data perpajakan dari database Oracle secara efisien.
+
+\subsection{Alur Kerja Aplikasi}
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance=1.5cm]
+        % Titik Mulai
+        \node (start) [startstop] {User Mengakses Menu};
+        
+        % Tahap 1: Initial Load
+        \node (step1) [process, below of=start] {\textbf{1. Pemuatan Kerangka}\\Memuat struktur HTML dasar (\emph{Razor View})};
+        
+        % Tahap 2: AJAX Request
+        \node (step2) [process, below of=step1] {\textbf{2. Permintaan Data}\\Fungsi \emph{jQuery} memicu \emph{AJAX Request} asinkron};
+        
+        % Tahap 3: Back-end Processing
+        \node (step3) [process, below of=step2] {\textbf{3. Pengolahan Data}\\Controller memanggil ViewModel $\rightarrow$ Oracle via EF Core};
+        
+        % Tahap 4: Response
+        \node (step4) [process, below of=step3] {\textbf{4. Pengembalian Hasil}\\Server mengirim data (\emph{JSON / Partial View})};
+        
+        % Tahap 5: Client-side Rendering
+        \node (step5) [process, below of=step4] {\textbf{5. Perenderaan Dinamis}\\Data dirender ke \emph{DevExtreme DataGrid}};
+
+        % Garis Panah
+        \draw [arrow] (start) -- (step1);
+        \draw [arrow] (step1) -- (step2);
+        \draw [arrow] (step2) -- (step3);
+        \draw [arrow] (step3) -- (step4);
+        \draw [arrow] (step4) -- (step5);
+    \end{tikzpicture}
+    \caption{Alur Komunikasi Data Asinkron MonPD Reborn}
+    \label{fig:web_flow}
+\end{figure}
+
+Sistem MonPD Reborn dirancang untuk meminimalkan waktu tunggu pengguna melalui mekanisme pemuatan data asinkron. Berbeda dengan sistem lama yang memuat seluruh data secara sekaligus, alur kerja sistem ini dibagi menjadi beberapa tahapan sebagai berikut:
+\begin{enumerate}
+    \item \textbf{Pemuatan Kerangka (Initial Load)}: Saat pengguna mengakses menu, browser hanya memuat struktur HTML dasar (Razor View) tanpa data. Hal ini membuat halaman terasa instan saat dibuka.
+    \item \textbf{Permintaan Data (AJAX Request)}: Setelah kerangka siap, fungsi JavaScript (jQuery) secara otomatis mengirimkan permintaan ke Action Method di Controller di latar belakang.
+    \item \textbf{Pengolahan Data (Back-end Processing)}: Controller memanggil method di dalam ViewModel untuk berinteraksi dengan database Oracle melalui Entity Framework Core.
+    \item \textbf{Pengembalian Hasil (Response)}: Server mengembalikan data dalam format Partial View atau JSON.
+    \item \textbf{Perenderaan Dinamis (Client-side Rendering)}: Komponen DevExtreme DataGrid menerima data tersebut dan menampilkannya kepada pengguna tanpa perlu melakukan penyegaran halaman (refresh).
+\end{enumerate}
+
+Mekanisme ini memungkinkan halaman terasa instan saat dibuka karena \emph{browser} tidak perlu menunggu seluruh data dari \emph{database} Oracle selesai ditarik sebelum menampilkan antarmuka.
+
+\subsection{Pengembangan Application Layer (Backend)}
+Penulis menerapkan pola arsitektur Fat ViewModel dan Thin Controller. Pendekatan ini bertujuan untuk memusatkan seluruh logika bisnis, pemfilteran, dan agregasi data di dalam ViewModel, sehingga Controller tetap ramping dan hanya berfungsi sebagai pengatur alur permintaan.
+\begin{enumerate}
+    \item Struktur ViewModel: Setiap modul memiliki ViewModel khusus, seperti ReklameLiarVM. Di dalamnya terdapat berbagai kelas seperti Index, Show, dan Detail untuk melayani kebutuhan data yang spesifik.
+    \item Logika Pengambilan Data: Penulis membangun method seperti GetDataRekapWPList() untuk menangani filter dinamis dan memanggil Stored Procedure yang disediakan oleh tim database Bapenda.
+    \item Enkapsulasi Logika: Seluruh kalkulasi persentase pencapaian dan perbandingan target vs realisasi dilakukan di sisi server sebelum dikirim ke front-end untuk menjaga konsistensi data.
+\end{enumerate}
+
+\subsection{Pengembangan \emph{Presentation Layer} (\emph{Frontend})}
+Pada lapisan presentasi, penulis fokus pada pembangunan antarmuka yang responsif dan interaktif menggunakan jQuery dan toolkit DevExtreme.
+\begin{enumerate}
+    \item \textbf{Implementasi AJAX:} Penulis menulis fungsi \emph{JavaScript} seperti \texttt{fnShow()} untuk memicu pemuatan tabel secara asinkron. Teknik ini berhasil mereduksi waktu muat dari $\pm 120$ detik menjadi hanya $\pm 3 - 5$ detik.
+    \item \textbf{Konfigurasi \emph{DevExtreme DataGrid}:} Komponen ini dikonfigurasi untuk menangani volume data besar dengan fitur \emph{server-side paging}. Penulis juga mengimplementasikan \emph{Banded Columns} untuk mengelompokkan data yang berkaitan, seperti kolom ``Pokok'' dan ``Sanksi'' di bawah kategori tahun yang sama.
+    \item \textbf{Fitur \emph{Drill-down}:} Melalui fungsi \texttt{showDetailModal()}, pengguna dapat mengklik angka pada tabel rekapitulasi untuk menampilkan \emph{pop-up} detail transaksi individual yang dimuat melalui \emph{Partial View} \texttt{\_Detail.cshtml}.
+\end{enumerate}
+
+
+\subsection{Hasil Implementasi Fitur Utama}
+Berikut adalah hasil dari implementasi kode program yang telah dilakukan:
+\begin{itemize}
+    \item Dashboard Analitik Utama: Tampilan pusat komando yang menyajikan KPI (Key Performance Indicator) secara instan untuk setiap jenis pajak ditunjukkan pada gambar \ref{fig:dashboard-utama-monpd}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.95\textwidth]{gambar/dashboard-utama-monpd.png}
+        \caption{Tampilan Dashboard Utama MonPD Reborn}
+        \label{fig:dashboard-utama-monpd}
+    \end{figure}
+
+    \item Template Modul Analitik: Standar tampilan yang memisahkan antara panel filter, ringkasan KPI, dan tabel rincian diimplementasikan pada seluruh modul, seperti yang terlihat pada gambar \ref{fig:dashboard-menu-monpd}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.55\textwidth]{gambar/dashboard-menu-monpd.png}
+        \caption{Tampilan Dashboard Menu MonPD Reborn}
+        \label{fig:dashboard-menu-monpd}
+    \end{figure}
+
+    \item Interaktivitas Data: Fitur filter per kolom, pencarian instan, dan pengurutan data pada komponen DataGrid ditunjukkan pada gambar \ref{fig:datagrid}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.99\textwidth]{gambar/datagrid.png}
+        \caption{Implementasi DevExtreme DataGrid dengan Fitur Interaktif}
+        \label{fig:datagrid}
+    \end{figure}
+
+    \item Detail Pop-up (Drill-down): Mekanisme pemuatan data detail tanpa kehilangan konteks halaman utama menggunakan modal asinkron ditunjukkan pada gambar \ref{fig:popup-detail}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.69\textwidth]{gambar/popup-detail.png}
+        \caption{Implementasi Detail Pop-up pada MonPD Reborn}
+        \label{fig:popup-detail}
+    \end{figure}
+
+    \item Visualisasi Geospasial: Plot lokasi objek pajak di atas peta Kota Surabaya untuk analisis potensi kewilayahan ditunjukkan pada gambar \ref{fig:geospasial}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.76\textwidth]{gambar/geospasial.png}
+        \caption{Visualisasi Geospasial pada MonPD Reborn}
+        \label{fig:geospasial}
+    \end{figure}
+
+    \item Tabel Rekapitulasi Kinerja: Penyajian perbandingan target dan realisasi yang dilengkapi dengan progress bar otomatis ditunjukkan pada gambar \ref{fig:realisasi-pajak}.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.93\textwidth]{gambar/realisasi-pajak.png}
+        \caption{Tabel Realisasi Pajak}
+        \label{fig:realisasi-pajak}
+    \end{figure}
+
+\end{itemize}

@@ -1,0 +1,31 @@
+\section{Peran dan Kontribusi Penulis}
+\label{sec:perankontribusi}
+
+Selama pelaksanaan proyek Pengembangan Sistem Monitoring Pendapatan Daerah (MonPD Reborn), penulis berperan sebagai Full-Stack Developer yang berfokus pada arsitektur Model-View-Controller (MVC) dalam framework ASP.NET Core. Kontribusi utama penulis mencakup perancangan dan implementasi di dua lapisan utama: Presentation Layer (Front-End) dan Application Layer (Back-End).
+
+\begin{enumerate}
+    \item Kontribusi pada Application Layer (Back-End): \\
+    Penulis bertanggung jawab penuh atas seluruh logika bisnis dan alur data di sisi server aplikasi. Ini mencakup:
+    \begin{itemize}
+        \item Merancang dan mengimplementasikan arsitektur Fat ViewModel, Thin Controller menggunakan bahasa C\#.
+        \item Membangun kelas-kelas ViewModel yang berfungsi sebagai "cetakan" data untuk setiap halaman. Di dalam method ViewModel inilah seluruh logika bisnis, pemfilteran, dan agregasi data diimplementasikan.
+        \item Membuat Controller yang ramping (thin) yang hanya bertugas menerima permintaan HTTP dari pengguna dan memanggil method yang sesuai di dalam ViewModel.
+    \end{itemize}
+
+    \item Kontribusi pada Presentation Layer (Front-End): \\
+    Penulis juga bertanggung jawab untuk menerjemahkan rancangan antarmuka (UI/UX) menjadi halaman web yang fungsional, interaktif, dan responsif. Ini mencakup:
+    \begin{itemize}
+        \item Membangun struktur halaman menggunakan HTML dan Razor Views (.cshtml).
+        \item Mengimplementasikan seluruh interaktivitas pengguna, terutama fitur pemuatan data asinkron AJAX menggunakan jQuery, yang menjadi solusi utama atas masalah performa sistem.
+        \item Mengintegrasikan dan mengkonfigurasi komponen UI canggih dari DevExtreme, seperti DataGrid (untuk banded columns, filtering, paging) dan komponen dashboard.
+    \end{itemize}
+
+    \item Batasan Peran dan Kolaborasi: \\
+    Sesuai dengan pembagian peran yang telah ditetapkan oleh tim IT Bapenda, peran penulis difokuskan penuh pada pengembangan aplikasi (front-end dan back-end) dan tidak mencakup administrasi atau perancangan skema database.
+    
+    Alur kerja kolaborasinya adalah sebagai berikut: Tim database Bapenda bertanggung jawab untuk menyediakan akses data, umumnya dalam bentuk stored procedures atau query yang sudah tervalidasi dan dioptimalkan di sisi server Oracle.
+    
+    Tugas penulis adalah memanggil stored procedures atau fungsi tersebut dari dalam kode C\# (di Application Layer), menerima hasilnya (dalam bentuk variabel), dan kemudian mengelola, memanipulasi, dan memformat data tersebut di dalam ViewModel agar siap untuk dikonsumsi dan ditampilkan secara efisien oleh Front-End.
+\end{enumerate}
+
+Secara ringkas, peran penulis adalah sebagai jembatan utama yang menghubungkan data mentah yang disediakan oleh tim database dengan antarmuka analitik interaktif yang digunakan oleh pegawai Bapenda, dengan fokus utama pada optimalisasi performa dan logika bisnis di application layer.

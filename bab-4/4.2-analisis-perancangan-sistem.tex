@@ -1,0 +1,104 @@
+\section{Analisis dan Perancangan Sistem}
+\label{sec:analisisperancangansistem}
+
+Analisis sistem dilakukan untuk memahami alur kerja internal Bapenda serta kebutuhan fungsional dari setiap modul yang akan dikembangkan. Hasil analisis ini kemudian menjadi dasar dalam perancangan arsitektur sistem, struktur \emph{ViewModel}, dan desain antarmuka pengguna.
+
+\subsection{Analisis Kebutuhan Fungsional}
+Berdasarkan diskusi dan analisis, diidentifikasi kebutuhan fungsional yang menjadi dasar pengembangan MonPD Reborn. Detailnya disajikan dalam Tabel \ref{tab:kebutuhan_fungsional}.
+
+\renewcommand{\arraystretch}{1.5}
+
+% Menggunakan kolom p{} agar teks membungkus (wrap) dengan benar di kertas A5
+\begin{longtable}{|c|p{2cm}|p{2cm}|p{4cm}|}
+\caption{Analisis Kebutuhan Fungsional MonPD Reborn}
+\label{tab:kebutuhan_fungsional} \\
+\hline
+\textbf{No} & \textbf{Menu Utama} & \textbf{Sub-menu} & \textbf{Deskripsi Kebutuhan} \\ \hline
+\endfirsthead
+
+\hline
+\textbf{No} & \textbf{Menu Utama} & \textbf{Sub-menu} & \textbf{Deskripsi Kebutuhan} \\ \hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+1 & \multirow{8}{2cm}{Objek Pajak} & Series Pendapatan & Menampilkan data historis pendapatan daerah dalam bentuk \emph{series}. \\ \cline{1-1} \cline{3-4}
+2 &  & Pengedokan Pajak & Modul untuk memantau aktivitas pendataan potensi pajak di lapangan. \\ \cline{1-1} \cline{3-4}
+3 &  & Pemeriksaan Pajak & Menampilkan rekapitulasi dan detail hasil pemeriksaan objek pajak. \\ \cline{1-1} \cline{3-4}
+4 &  & Alat Rekam \emph{Online} & Memonitor data dari alat rekam transaksi (\emph{tapping box}). \\ \cline{1-1} \cline{3-4}
+5 &  & Realisasi Kontrol & Menyajikan perbandingan antara target dan realisasi secara detail. \\ \cline{1-1} \cline{3-4}
+6 &  & Data OP & Akses untuk melihat dan mengelola data \emph{master} Objek Pajak. \\ \cline{1-1} \cline{3-4}
+7 &  & Monitoring Capaian & \emph{Dashboard} untuk memantau progres pencapaian target. \\ \cline{1-1} \cline{3-4}
+8 &  & Monitoring Wilayah & Membandingkan capaian pendapatan antar wilayah kerja (UPTB). \\ \hline
+
+9 & \multirow{4}{2cm}{Pengawasan Reklame} & Reklame \emph{Summary} & Menampilkan ringkasan data agregat jumlah reklame dan potensi pendapatan. \\ \cline{1-1} \cline{3-4}
+10 &  & Kontrol Reklame & Modul melakukan kontrol dan validasi terhadap data reklame. \\ \cline{1-1} \cline{3-4}
+11 &  & Reklame Liar & Mencatat laporan mengenai reklame yang tidak berizin. \\ \cline{1-1} \cline{3-4}
+12 &  & Pendataan Reklame & Antarmuka untuk proses pendataan titik reklame baru. \\ \hline
+
+13 & \multirow{4}{2cm}{Wajib Pajak} & Aktivitas Penghimbauan & Mencatat dan memonitor kegiatan penghimbauan kepada WP. \\ \cline{1-1} \cline{3-4}
+14 &  & Aktivitas Peneguran & Melacak pengiriman surat teguran kepada WP yang menunggak. \\ \cline{1-1} \cline{3-4}
+15 &  & Aktivitas Penagihan & Memantau siklus penagihan aktif. \\ \cline{1-1} \cline{3-4}
+16 &  & Data WP & Akses terpusat profil dan riwayat data Wajib Pajak. \\ \hline
+
+17 & \multirow{2}{2cm}{Laporan Strategis} & Evaluasi Target & Laporan perbandingan target dengan realisasi periode tertentu. \\ \cline{1-1} \cline{3-4}
+18 &  & Analisis Tren & Menyajikan analisis kenaikan atau penurunan pendapatan. \\ \hline
+\end{longtable}
+
+
+\subsection{Perancangan Arsitektur Sistem}
+Sistem ini dibangun menggunakan arsitektur \emph{Model View Controller} (MVC) yang disediakan oleh \emph{framework} ASP.NET Core dengan bahasa pemrograman C\#. Pola arsitektur ini dipilih karena kemampuannya memisahkan antara logika bisnis, data, dan presentasi, sehingga menghasilkan struktur kode yang rapi, modular, dan mudah dikelola.
+\begin{itemize}
+    \item Model: Terdiri dari serangkaian kelas \emph{ViewModel} (VM) yang dirancang khusus untuk setiap halaman. \emph{ViewModel} ini berfungsi sebagai ``cetakan'' data yang akan dikirim ke antarmuka, menggabungkan data dari berbagai sumber dan mengolahnya sesuai kebutuhan tampilan. Di dalam \emph{ViewModel}, terdapat juga kelas \emph{Method} yang berisi logika untuk mengambil dan memanipulasi data (baik data \emph{dummy} maupun dari basis data). Salah satu keputusan desain arsitektur yang penting adalah menempatkan sebagian besar logika bisnis di dalam \emph{Method} pada setiap \emph{ViewModel}. Dengan pendekatan ini, \emph{Controller} hanya bertugas sebagai penerus permintaan. Contohnya, pada \emph{ViewModel} \texttt{ReklameLiarVM}, terdapat lebih dari 5 \emph{class} yang berbeda (\emph{Index, Show, Detail, RekapBulanan, DetailData}) untuk melayani setiap kebutuhan data yang spesifik, mulai dari data rekap bulanan hingga data detail untuk \emph{modal pop-up}.
+    \item View: Terdiri dari file-file \texttt{.cshtml} (\emph{Razor}) yang bertanggung jawab untuk menampilkan antarmuka pengguna. Halaman \emph{View} menerima data dari \emph{Controller} melalui objek \emph{ViewModel} dan menampilkannya dalam bentuk \emph{dashboard}, tabel, dan formulir. Sebagian besar tampilan tabel interaktif diimplementasikan menggunakan komponen dari \emph{DevExtreme}.
+    \item Controller: Berperan sebagai jembatan antara \emph{Model} dan \emph{View}. \emph{Controller} menerima permintaan HTTP dari pengguna (misalnya, saat \emph{filter} diterapkan), memanggil \emph{Method} yang sesuai di dalam \emph{ViewModel} untuk mendapatkan data, lalu mengirimkan data tersebut ke \emph{View} yang relevan untuk ditampilkan kepada pengguna.
+\end{itemize}
+
+\subsection{Perancangan Database}
+Aplikasi ini berinteraksi dengan basis data yang sudah ada di server \emph{database} Bapenda. Koneksi dan manipulasi data dari aplikasi ke basis data ditangani menggunakan \emph{Entity Framework Core}, dengan kelas \texttt{DBContext} yang berfungsi sebagai gerbang utama. Data yang digunakan selama pengembangan bersifat data riil, sehingga struktur \emph{ViewModel} dan logika aplikasi dirancang untuk dapat terhubung langsung dengan tabel-tabel utama seperti \texttt{TPemeriksaan}, \texttt{DbMonResto}, \texttt{DbMonParkir}, dan lainnya, yang merepresentasikan data riil di server \emph{database} Bapenda.
+
+\subsection{Perancangan Antarmuka (UI/UX)}
+
+Perancangan antarmuka pada sistem MonPD Reborn dilakukan dengan mengedepankan prinsip \emph{Information Hierarchy} dan efisiensi operasional. Mengingat sistem ini digunakan untuk memonitor data perpajakan yang sangat besar, setiap halaman dirancang untuk meminimalkan beban kognitif pengguna melalui penempatan elemen yang strategis. Berikut adalah rincian rancangan tata letak dan fungsionalitas pada setiap bagian utama sistem:
+
+\begin{itemize}
+    \item Rancangan Pusat Komando (\emph{Command Center}) \\
+    Tampilan utama atau \emph{dashboard} dirancang menggunakan tata letak berbasis kartu (\emph{card-based layout}) seperti yang ditunjukkan pada Gambar 4.1. 
+    \begin{itemize}
+        \item \textbf{Fitur:} Kartu metrik jenis pajak, indikator persentase pencapaian, dan ringkasan jumlah objek pajak.
+        \item \textbf{Analisis Penempatan:} Penempatan kartu disusun secara \emph{grid} untuk menyajikan \emph{bird's-eye view} terhadap seluruh sektor pendapatan. Metrik utama diletakkan di bagian atas kartu agar pengguna dapat segera mengidentifikasi sektor mana yang kinerjanya berada di bawah target tanpa harus membaca rincian tabel terlebih dahulu.
+    \end{itemize}
+
+    \item Rancangan Struktur Modul Analitik \\
+    Setiap modul analitik (misalnya Monitoring Wilayah) menggunakan \emph{standardized template} tiga lapis yang konsisten untuk menciptakan alur kerja yang intuitif (Gambar 4.2).
+    \begin{itemize}
+        \item \textbf{Panel Filter (Atas):} Diletakkan paling atas sebagai gerbang pertama sebelum data ditampilkan. Hal ini menerapkan prinsip \emph{Progressive Disclosure}, di mana sistem memaksa pengguna menentukan parameter data (Tahun, Bulan, Wilayah) guna menjaga performa sistem tetap ringan saat memuat data.
+        \item \textbf{Ringkasan KPI (Tengah):} Terdiri dari kartu-kartu metrik sebagai rangkuman hasil filter. Penempatan di tengah berfungsi sebagai jembatan informasi antara parameter filter dan data detail.
+        \item \textbf{Tabel Rincian (Bawah):} Area terluas diletakkan di bagian bawah untuk menyajikan detail transaksi yang kompleks secara komprehensif.
+    \end{itemize}
+
+    \item Rancangan Interaktivitas Data (\emph{DataGrid}) \\
+    Komponen \emph{DataGrid} (Gambar 4.3) dirancang untuk memberikan kendali analisis penuh kepada pengguna tanpa perlu berpindah halaman.
+    \begin{itemize}
+        \item \textbf{Fitur:} \emph{Filter Row} per kolom, \emph{Header Filter} untuk nilai unik, dan pengurutan dinamis.
+        \item \textbf{Analisis Penempatan:} Ikon pencarian (\emph{magnifying glass}) diletakkan langsung di bawah \emph{header} kolom untuk memudahkan pencarian data spesifik (misalnya Nama atau Alamat) secara cepat, mengurangi kebutuhan untuk fitur pencarian global yang seringkali menghasilkan data yang terlalu luas.
+    \end{itemize}
+
+    \item Rancangan \emph{Drill-down} dan Visualisasi Geospasial \\
+    Untuk memperdalam analisis data tanpa kehilangan konteks halaman utama, sistem mengintegrasikan fitur \emph{modal pop-up} dan pemetaan (Gambar 4.4 dan 4.5).
+    \begin{itemize}
+        \item \textbf{Pop-up Detail:} Menggunakan jendela \emph{modal} di atas halaman utama untuk menampilkan transaksi individu. Ini bertujuan untuk menjaga \emph{context-awareness} pengguna agar tetap ingat pada parameter rekapitulasi yang sedang mereka amati.
+        \item \textbf{Plotting Peta:} Visualisasi titik lokasi objek pajak di atas peta Kota Surabaya diletakkan secara terintegrasi dengan filter wilayah. Penempatan ini memudahkan tim lapangan dalam merencanakan rute pengawasan berdasarkan kepadatan titik objek pajak secara visual.
+    \end{itemize}
+
+    \item Rancangan Komparasi Realisasi Pajak \\
+    Penyajian data rekapitulasi kinerja (Gambar 4.6) difokuskan pada perbandingan target vs realisasi.
+    \begin{itemize}
+        \item \textbf{Indikator Visual:} Penggunaan \emph{progress bar} berwarna disamping angka persentase. 
+        \item \textbf{Analisis Penempatan:} Kolom Target dan Realisasi disandingkan secara berdampingan untuk memudahkan pemindaian visual (\emph{visual scanning}). Indikator warna (merah/kuning/hijau) diletakkan di akhir baris sebagai konklusi cepat terhadap status pencapaian metrik tersebut.
+    \end{itemize}
+\end{itemize}

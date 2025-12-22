@@ -1,0 +1,28 @@
+\section{\emph{Entity Framework Core} (EF Core)}
+\label{sec:efcore}
+
+Entity Framework Core (EF Core) adalah kerangka kerja Object-Relational Mapper (ORM) yang direkomendasikan untuk .NET, yang sebelumnya dikenal sebagai .NET Core. Sebagai penerus EF6, EF Core telah sepenuhnya direkayasa ulang dan dijadikan open source di GitHub. EF Core dikembangkan oleh Microsoft sehingga memungkinkan pengguna untuk memetakan kelas-kelas C\# ke tabel-tabel database. Ini memungkinkan pengguna berinteraksi dengan database menggunakan kode C\# alih-alih menulis query SQL secara langsung [12]. Fitur-fitur utama dari EF Core diantaranya:
+
+\begin{itemize}
+    \item Cross-Platform Support: Dapat digunakan di Windows, macOS, dan Linux.
+    \item LINQ Support: Memungkinkan Anda menggunakan LINQ (Language Integrated Query) untuk melakukan kueri database.
+    \item Pelacakan Perubahan: Secara otomatis melacak perubahan dalam data, sehingga memudahkan untuk memperbarui catatan.
+    \item Migrasi: Memungkinkan Anda untuk mengelola dan menerapkan perubahan skema pada database dari waktu ke waktu.
+\end{itemize}
+
+EF Core menggunakan DbContext, yang merepresentasikan sesi dengan database dan memungkinkan pengguna untuk melakukan query dan menyimpan data. Kelas C\# yang juga dikenal sebagai entity, dipetakan ke tabel database, dan properti kelas tersebut dipetakan ke kolom dalam tabel. Alur ini dapat dibagi menjadi tiga konsep utama:
+
+\begin{itemize}
+    \item Model: Kelas-kelas C\# merepresentasikan struktur database.
+    \item Context: Kelas DbContext yang menangani operasi database seperti query, menambah, memperbarui, dan menghapus data.
+    \item Database Provider: EF Core mendukung berbagai database seperti SQL Server, MySQL, PostgreSQL, dan SQLite melalui penyedia database.
+\end{itemize}
+
+Dengan menggunakan EF Core, pengembang dapat lebih fokus pada logika bisnis aplikasi tanpa harus terlalu khawatir tentang detail implementasi database, sehingga mempercepat proses pengembangan aplikasi.
+
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=0.4\textwidth]{gambar/efcore.png}
+    \caption{Logo EF Core}
+    \label{fig:efcore}
+\end{figure}

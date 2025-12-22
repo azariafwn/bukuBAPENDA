@@ -1,0 +1,10 @@
+\section{\emph{Asynchronous JavaScript and XML} (AJAX)}
+\label{sec:ajax}
+
+AJAX bukanlah sebuah bahasa pemrograman, melainkan sebuah teknik atau pendekatan pengembangan web untuk menciptakan aplikasi yang cepat dan dinamis \cite{aws_ajax}. AJAX merupakan singkatan dari Asynchronous JavaScript and XML. Teknik ini memungkinkan halaman web untuk berkomunikasi dengan server di latar belakang (mengirim dan mengambil data) secara asinkron tanpa harus memuat ulang (refresh) seluruh halaman \cite{w3schools_ajax}.
+
+Konsep "asinkron" adalah kuncinya. Ini berarti bahwa browser tidak "dibekukan" dan dapat terus merespons interaksi pengguna (seperti scrolling atau input lain) sementara permintaan data ke server sedang diproses di latar belakang. Saat data diterima dari server (yang kini lebih umum menggunakan format JSON daripada XML), JavaScript akan mengambil alih untuk memperbarui bagian spesifik dari halaman (DOM) dengan data baru tersebut.
+
+Inti dari teknologi AJAX di dalam browser adalah objek XMLHttpRequest (XHR). Objek inilah yang bertugas membuka koneksi, mengirim permintaan, dan menerima respons dari server. Library seperti jQuery kemudian membungkus penggunaan objek XHR yang kompleks ini ke dalam fungsi yang sederhana seperti \$.ajax().
+
+Pada proyek MonPD Reborn, teknik AJAX adalah solusi fundamental untuk mengatasi masalah performa. Daripada memuat seluruh data secara serentak saat halaman dibuka, aplikasi menggunakan panggilan AJAX untuk memuat data Partial View (seperti tabel dan detail) hanya pada saat data tersebut dibutuhkan oleh pengguna. 

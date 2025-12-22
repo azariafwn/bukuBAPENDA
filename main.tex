@@ -37,9 +37,24 @@
 \usepackage{eso-pic} % Pembuatan background
 \usepackage{changepage} % Pembuatan teks kolom
 \usepackage{wrapfig} % Wrapping gambar
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+
+
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning}
+
+% Pengaturan gaya kotak diagram yang lebih lebar
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=8cm, minimum height=0.8cm, text centered, draw=black, fill=red!20]
+\tikzstyle{process} = [rectangle, minimum width=9cm, minimum height=1cm, text centered, text width=8.5cm, draw=black, fill=orange!20]
+\tikzstyle{arrow} = [thick,->,>=stealth]
 
 % Definisi untuk "Hati ini sengaja dikosongkan"
 \def\kosong{
+  \thispagestyle{empty}      % Menghilangkan nomor halaman agar tidak terlihat
+  \addtocounter{page}{-1}    % Mengurangi hitungan halaman (agar tidak bertambah)
   \vspace*{\fill}
   \begin{center}\textit{Halaman ini sengaja dikosongkan}\end{center}
   \vfill
@@ -142,27 +157,23 @@
   \pagenumbering{arabic}
 
   % Bab 1 pendahuluan
-  \input{bab/1-pendahuluan.tex}
+  \input{bab-1/1-master.tex}
   \cleardoublepage
 
-  % Bab 2 profil perusahaan
-  \input{bab/2-profil-perusahaan.tex}
+  % Bab 2 
+  \input{bab-2/2-master.tex}
   \cleardoublepage
 
-  % Bab 3 tunjauan pustaka
-  \input{bab/3-tinjauan-pustaka.tex}
+  % Bab 3 
+  \input{bab-3/3-master.tex}
   \cleardoublepage
 
-  % Bab 4 desain dan implementasi
-  \input{bab/4-desain-implementasi.tex}
+  % Bab 4 
+  \input{bab-4/4-master.tex}
   \cleardoublepage
 
-  % Bab 5 pengujian dan evaluasi
-  \input{bab/5-pengujian-evaluasi.tex}
-  \cleardoublepage
-
-  % Bab 6 kesimpulan dan saran
-  \input{bab/6-kesimpulan-saran.tex}
+  % Bab 5 
+  \input{bab-5/5-master.tex}
   \cleardoublepage
 
   % Daftar pustaka

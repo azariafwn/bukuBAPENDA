@@ -1,0 +1,29 @@
+\section{Hasil dan Dampak Implementasi}
+\label{sec:hasildampak}
+Implementasi sistem MonPD Reborn berhasil memberikan solusi konkret terhadap tantangan yang dihadapi oleh sistem sebelumnya. Dampak dari pengembangan ini dapat diukur baik secara kualitatif dari pengalaman pengguna maupun secara kuantitatif melalui peningkatan performa dan efisiensi kerja.
+
+\subsection{Peningkatan Performa Sistem}
+Salah satu tujuan utama proyek ini adalah mengatasi kelambatan sistem lama. Berdasarkan hasil analisis dan uji coba, tercatat adanya peningkatan performa yang sangat signifikan:
+\begin{itemize}
+    \item Reduksi Waktu Muat Halaman \\
+    Waktu yang dibutuhkan untuk memuat halaman rekap data pada sistem lama dapat mencapai ±120 detik (2 menit) karena seluruh data dimuat secara serentak. Pada sistem MonPD Reborn yang telah dikembangkan, dengan menerapkan teknik asynchronous loading (AJAX) dan server-side paging, waktu muat rata-rata berhasil direduksi secara drastis menjadi hanya ±3–5 detik.
+    \item Peningkatan Kecepatan Lebih dari 95\% \\
+    Jika dibandingkan secara langsung, pengurangan waktu muat dari 120 detik menjadi 5 detik ekuivalen dengan peningkatan performa sebesar 95.8\%. Peningkatan ini secara fundamental mengubah pengalaman pengguna dari yang sebelumnya menunggu menjadi nyaris instan.
+    \item Efisiensi Transfer Data \\
+    Peningkatan kecepatan ini juga disebabkan oleh optimasi payload data. Sistem lama mentransfer keseluruhan data set yang bisa berukuran beberapa megabyte dalam satu kali permintaan. Sistem baru, untuk menampilkan halaman pertama sebuah tabel, hanya mentransfer kurang dari 100 KB, karena hanya 10 hingga 20 baris data yang diambil dari total ratusan ribu record yang ada di database.
+
+\end{itemize}
+
+\subsection{Peningkatan Efisiensi Kerja}
+Peningkatan performa teknis secara langsung berdampak pada efisiensi kerja pegawai Bapenda:
+\begin{itemize}
+    \item Penghematan Waktu Kerja Harian \\
+    Dengan eliminasi waktu tunggu yang lama, efisiensi kerja meningkat. Jika seorang pegawai sebelumnya menunggu rata-rata 115 detik untuk setiap halaman yang dibuka dan mengakses sekitar 30 halaman per hari, maka sistem MonPD Reborn berhasil memberikan penghematan waktu tunggu sekitar 57 menit per pegawai setiap harinya. Waktu ini dapat dialokasikan untuk tugas-tugas analisis yang lebih produktif.
+    \item Percepatan Analisis Data \\
+    Fitur filter, sorting, dan pencarian interaktif yang disediakan oleh komponen DevExtreme memungkinkan pengguna untuk mendapatkan data spesifik dalam hitungan detik. Proses yang sebelumnya memerlukan ekspor data ke Excel dan filter manual selama 5-10 menit, kini dapat diselesaikan langsung di aplikasi dalam kurang dari 30 detik.
+    \item Pengalaman Pengguna (User Experience) yang Lebih Baik \\
+    Secara kualitatif, sistem yang responsif dan tidak lambat meningkatkan kepuasan dan mengurangi frustrasi pengguna. Antarmuka yang modern dan intuitif membuat proses monitoring dan analisis data menjadi lebih lancar dan efektif.
+\end{itemize}
+
+Dengan demikian, proyek MonPD Reborn tidak hanya berhasil melakukan peremajaan teknologi, tetapi juga memberikan dampak kuantitatif dan kualitatif yang terukur dalam mendukung efisiensi operasional Bapenda Kota Surabaya.
+
