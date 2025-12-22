@@ -53,9 +53,13 @@ Berdasarkan diskusi dan analisis, diidentifikasi kebutuhan fungsional yang menja
 \subsection{Perancangan Arsitektur Sistem}
 Sistem ini dibangun menggunakan arsitektur \emph{Model View Controller} (MVC) yang disediakan oleh \emph{framework} ASP.NET Core dengan bahasa pemrograman C\#. Pola arsitektur ini dipilih karena kemampuannya memisahkan antara logika bisnis, data, dan presentasi, sehingga menghasilkan struktur kode yang rapi, modular, dan mudah dikelola.
 \begin{itemize}
-    \item Model: Terdiri dari serangkaian kelas \emph{ViewModel} (VM) yang dirancang khusus untuk setiap halaman. \emph{ViewModel} ini berfungsi sebagai ``cetakan'' data yang akan dikirim ke antarmuka, menggabungkan data dari berbagai sumber dan mengolahnya sesuai kebutuhan tampilan. Di dalam \emph{ViewModel}, terdapat juga kelas \emph{Method} yang berisi logika untuk mengambil dan memanipulasi data (baik data \emph{dummy} maupun dari basis data). Salah satu keputusan desain arsitektur yang penting adalah menempatkan sebagian besar logika bisnis di dalam \emph{Method} pada setiap \emph{ViewModel}. Dengan pendekatan ini, \emph{Controller} hanya bertugas sebagai penerus permintaan. Contohnya, pada \emph{ViewModel} \texttt{ReklameLiarVM}, terdapat lebih dari 5 \emph{class} yang berbeda (\emph{Index, Show, Detail, RekapBulanan, DetailData}) untuk melayani setiap kebutuhan data yang spesifik, mulai dari data rekap bulanan hingga data detail untuk \emph{modal pop-up}.
-    \item View: Terdiri dari file-file \texttt{.cshtml} (\emph{Razor}) yang bertanggung jawab untuk menampilkan antarmuka pengguna. Halaman \emph{View} menerima data dari \emph{Controller} melalui objek \emph{ViewModel} dan menampilkannya dalam bentuk \emph{dashboard}, tabel, dan formulir. Sebagian besar tampilan tabel interaktif diimplementasikan menggunakan komponen dari \emph{DevExtreme}.
-    \item Controller: Berperan sebagai jembatan antara \emph{Model} dan \emph{View}. \emph{Controller} menerima permintaan HTTP dari pengguna (misalnya, saat \emph{filter} diterapkan), memanggil \emph{Method} yang sesuai di dalam \emph{ViewModel} untuk mendapatkan data, lalu mengirimkan data tersebut ke \emph{View} yang relevan untuk ditampilkan kepada pengguna.
+    \item \textbf{Model}: \\
+    Terdiri dari serangkaian kelas \emph{ViewModel} (VM) yang dirancang khusus untuk setiap halaman. \emph{ViewModel} ini berfungsi sebagai ``cetakan'' data yang akan dikirim ke antarmuka, menggabungkan data dari berbagai sumber dan mengolahnya sesuai kebutuhan tampilan. Di dalam \emph{ViewModel}, terdapat juga kelas \emph{Method} yang berisi logika untuk mengambil dan memanipulasi data (baik data \emph{dummy} maupun dari basis data). \\
+    Salah satu keputusan desain arsitektur yang penting adalah menempatkan sebagian besar logika bisnis di dalam \emph{Method} pada setiap \emph{ViewModel}. Dengan pendekatan ini, \emph{Controller} hanya bertugas sebagai penerus permintaan. Contohnya, pada \emph{ViewModel} \texttt{ReklameLiarVM}, terdapat lebih dari 5 \emph{class} yang berbeda (\emph{Index, Show, Detail, RekapBulanan, DetailData}) untuk melayani setiap kebutuhan data yang spesifik, mulai dari data rekap bulanan hingga data detail untuk \emph{modal pop-up}.
+    \item \textbf{View}: \\
+    Terdiri dari file-file \texttt{.cshtml} (\emph{Razor}) yang bertanggung jawab untuk menampilkan antarmuka pengguna. Halaman \emph{View} menerima data dari \emph{Controller} melalui objek \emph{ViewModel} dan menampilkannya dalam bentuk \emph{dashboard}, tabel, dan formulir. Sebagian besar tampilan tabel interaktif diimplementasikan menggunakan komponen dari \emph{DevExtreme}.
+    \item \textbf{Controller}: \\
+    Berperan sebagai jembatan antara \emph{Model} dan \emph{View}. \emph{Controller} menerima permintaan HTTP dari pengguna (misalnya, saat \emph{filter} diterapkan), memanggil \emph{Method} yang sesuai di dalam \emph{ViewModel} untuk mendapatkan data, lalu mengirimkan data tersebut ke \emph{View} yang relevan untuk ditampilkan kepada pengguna.
 \end{itemize}
 
 \subsection{Perancangan Database}
@@ -67,14 +71,26 @@ Perancangan antarmuka pada sistem MonPD Reborn dilakukan dengan mengedepankan pr
 
 \begin{itemize}
     \item Rancangan Pusat Komando (\emph{Command Center}) \\
-    Tampilan utama atau \emph{dashboard} dirancang menggunakan tata letak berbasis kartu (\emph{card-based layout}) seperti yang ditunjukkan pada Gambar 4.1. 
+    Tampilan utama atau \emph{dashboard} dirancang menggunakan tata letak berbasis kartu (\emph{card-based layout}) seperti yang ditunjukkan pada Gambar \ref{fig:wireframe-dashboard-utama-monpd}. 
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.8\textwidth]{gambar/wireframe-dashboard-utama-monpd.png}
+        \caption{Wireframe Dashboard Utama MonPD Reborn}
+        \label{fig:wireframe-dashboard-utama-monpd}
+    \end{figure}
     \begin{itemize}
-        \item \textbf{Fitur:} Kartu metrik jenis pajak, indikator persentase pencapaian, dan ringkasan jumlah objek pajak.
-        \item \textbf{Analisis Penempatan:} Penempatan kartu disusun secara \emph{grid} untuk menyajikan \emph{bird's-eye view} terhadap seluruh sektor pendapatan. Metrik utama diletakkan di bagian atas kartu agar pengguna dapat segera mengidentifikasi sektor mana yang kinerjanya berada di bawah target tanpa harus membaca rincian tabel terlebih dahulu.
+        \item \textbf{Fitur:} Nama jenis pajak, nominal target, nominal realisasi, persentase capaian target, serta indikator visual berupa \emph{progress bar}.
+        \item \textbf{Analisis Penempatan:} Informasi tiap jenis pajak dikelompokkan ke dalam satu kartu untuk menjaga fokus pengguna pada satu jenis pajak dalam satu waktu. Nominal realisasi dan target diletakkan secara vertikal agar pengguna dapat melakukan perbandingan angka finansial secara langsung. Penempatan persentase capaian (\emph{light blue box}) dan \emph{progress bar} (\emph{red box}) di bagian atas berfungsi sebagai penanda visual instan (\emph{visual cues}) untuk mengetahui status pencapaian target tanpa harus meninjau angka nominal secara detail.
     \end{itemize}
 
     \item Rancangan Struktur Modul Analitik \\
-    Setiap modul analitik (misalnya Monitoring Wilayah) menggunakan \emph{standardized template} tiga lapis yang konsisten untuk menciptakan alur kerja yang intuitif (Gambar 4.2).
+    Setiap modul analitik (misalnya Monitoring Wilayah) menggunakan \emph{standardized template} tiga lapis yang konsisten untuk menciptakan alur kerja yang intuitif (Gambar \ref{fig:wireframe-dashboard-menu-monpd}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.55\textwidth]{gambar/wireframe-dashboard-menu-monpd.png}
+        \caption{Wireframe Dashboard Menu MonPD Reborn}
+        \label{fig:wireframe-dashboard-menu-monpd}
+    \end{figure}
     \begin{itemize}
         \item \textbf{Panel Filter (Atas):} Diletakkan paling atas sebagai gerbang pertama sebelum data ditampilkan. Hal ini menerapkan prinsip \emph{Progressive Disclosure}, di mana sistem memaksa pengguna menentukan parameter data (Tahun, Bulan, Wilayah) guna menjaga performa sistem tetap ringan saat memuat data.
         \item \textbf{Ringkasan KPI (Tengah):} Terdiri dari kartu-kartu metrik sebagai rangkuman hasil filter. Penempatan di tengah berfungsi sebagai jembatan informasi antara parameter filter dan data detail.
@@ -83,22 +99,40 @@ Perancangan antarmuka pada sistem MonPD Reborn dilakukan dengan mengedepankan pr
 
     \item Rancangan Interaktivitas Data (\emph{DataGrid}) \\
     Komponen \emph{DataGrid} (Gambar 4.3) dirancang untuk memberikan kendali analisis penuh kepada pengguna tanpa perlu berpindah halaman.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.85\textwidth]{gambar/wireframe-datagrid.png}
+        \caption{Wireframe DataGrid}
+        \label{fig:wireframe-datagrid}
+    \end{figure}
     \begin{itemize}
         \item \textbf{Fitur:} \emph{Filter Row} per kolom, \emph{Header Filter} untuk nilai unik, dan pengurutan dinamis.
         \item \textbf{Analisis Penempatan:} Ikon pencarian (\emph{magnifying glass}) diletakkan langsung di bawah \emph{header} kolom untuk memudahkan pencarian data spesifik (misalnya Nama atau Alamat) secara cepat, mengurangi kebutuhan untuk fitur pencarian global yang seringkali menghasilkan data yang terlalu luas.
     \end{itemize}
 
     \item Rancangan \emph{Drill-down} dan Visualisasi Geospasial \\
-    Untuk memperdalam analisis data tanpa kehilangan konteks halaman utama, sistem mengintegrasikan fitur \emph{modal pop-up} dan pemetaan (Gambar 4.4 dan 4.5).
+    Untuk memperdalam analisis data tanpa kehilangan konteks halaman utama, sistem mengintegrasikan fitur \emph{modal pop-up} dan pemetaan (Gambar \ref{fig:wireframe-geospasial}).
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.73\textwidth]{gambar/wireframe-geospasial.png}
+        \caption{Wireframe Visualisasi Geospasial}
+        \label{fig:wireframe-geospasial}
+    \end{figure}
     \begin{itemize}
         \item \textbf{Pop-up Detail:} Menggunakan jendela \emph{modal} di atas halaman utama untuk menampilkan transaksi individu. Ini bertujuan untuk menjaga \emph{context-awareness} pengguna agar tetap ingat pada parameter rekapitulasi yang sedang mereka amati.
         \item \textbf{Plotting Peta:} Visualisasi titik lokasi objek pajak di atas peta Kota Surabaya diletakkan secara terintegrasi dengan filter wilayah. Penempatan ini memudahkan tim lapangan dalam merencanakan rute pengawasan berdasarkan kepadatan titik objek pajak secara visual.
     \end{itemize}
 
     \item Rancangan Komparasi Realisasi Pajak \\
-    Penyajian data rekapitulasi kinerja (Gambar 4.6) difokuskan pada perbandingan target vs realisasi.
+    Penyajian data rekapitulasi kinerja (Gambar \ref{fig:wireframe-realisasi-pajak}) difokuskan pada perbandingan target vs realisasi.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.75\textwidth]{gambar/wireframe-realisasi-pajak.png}
+        \caption{Wireframe Realisasi Pajak}
+        \label{fig:wireframe-realisasi-pajak}
+    \end{figure}
     \begin{itemize}
         \item \textbf{Indikator Visual:} Penggunaan \emph{progress bar} berwarna disamping angka persentase. 
-        \item \textbf{Analisis Penempatan:} Kolom Target dan Realisasi disandingkan secara berdampingan untuk memudahkan pemindaian visual (\emph{visual scanning}). Indikator warna (merah/kuning/hijau) diletakkan di akhir baris sebagai konklusi cepat terhadap status pencapaian metrik tersebut.
+        \item \textbf{Analisis Penempatan:} Kolom Target dan Realisasi disandingkan secara berdampingan untuk memudahkan pemindaian visual (\emph{visual scanning}). Indikator warna (merah/kuning/hijau) dan \emph{progress bar} diletakkan di akhir baris sebagai konklusi cepat terhadap status pencapaian metrik tersebut.
     \end{itemize}
 \end{itemize}
