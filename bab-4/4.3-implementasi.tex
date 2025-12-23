@@ -51,29 +51,36 @@ Mekanisme ini memungkinkan halaman terasa instan saat dibuka karena \emph{browse
 Pada proyek ini, diterapkan pola arsitektur \emph{Fat ViewModel} dan \emph{Thin Controller}. Pendekatan ini bertujuan untuk memusatkan seluruh logika bisnis, pemfilteran, dan agregasi data di dalam \emph{ViewModel}, sehingga \emph{Controller} tetap ramping dan hanya berfungsi sebagai pengatur alur permintaan.
 
 \begin{enumerate}
+    \item \textbf{Pemetaan Entitas Data (Entity Mapping):} \\
+    Sesuai dengan batasan masalah yang memfokuskan pengerjaan pada \emph{Application Layer}, penulis merancang kelas entitas yang merepresentasikan tabel fisik di server Oracle menggunakan \emph{Data Annotations} pada EF Core sebagaimana ditunjukkan pada Kode 4.1.
+
+    \lstinputlisting[language={[Sharp]C}, caption={Pemetaan Entitas C\# ke Tabel Oracle pada Berkas TPemeriksaan.cs}]{program/TPemeriksaan.cs}
+
+    Penjelasan Kode 4.1: Kode ini mendefinisikan hubungan antara properti di dalam kode aplikasi dengan kolom fisik di \emph{database} Bapenda. Penggunaan atribut \texttt{[Table("T\_PEMERIKSAAN")]} dan \texttt{[Column]} memastikan bahwa EF Core dapat melakukan kueri secara akurat ke tabel yang telah dioptimalkan oleh tim \emph{database} Bapenda. Properti dengan tipe data \emph{nullable} seperti \texttt{decimal?} pada \texttt{JumlahKb} digunakan untuk menangani kemungkinan data kosong di \emph{database} tanpa menyebabkan \emph{system crash}.
+
     \item \textbf{Struktur \emph{ViewModel} dan \emph{Controller}:} 
-    Implementasi pola \emph{Thin Controller} ditunjukkan pada Kode 4.1, di mana \\ \texttt{PemeriksaanController} hanya bertugas menerima \emph{request}, melakukan instansiasi \emph{ViewModel}, dan mengembalikan \emph{Partial View}.
+    Implementasi pola \emph{Thin Controller} ditunjukkan pada Kode 4.2, di mana \\ \texttt{PemeriksaanController} hanya bertugas menerima \emph{request}, melakukan instansiasi \emph{ViewModel}, dan mengembalikan \emph{Partial View}.
     
     \lstinputlisting[language={[Sharp]C}, caption={Implementasi \emph{Thin Controller} pada \texttt{PemeriksaanController.cs}}]{program/PemeriksaanController.cs}
 
-    Penjelasan Kode 4.1: \emph{Action method} \texttt{Detail} menerima parameter \texttt{jenisPajak} dan \texttt{tahun}. Fungsi utama dari kode ini adalah memanggil kelas \emph{ViewModel} \texttt{Detail} dan menangani \emph{error handling} melalui blok \texttt{try-catch} untuk memastikan stabilitas aplikasi jika terjadi kegagalan sistem.
+    Penjelasan Kode 4.2: \emph{Action method} \texttt{Detail} menerima parameter \texttt{jenisPajak} dan \texttt{tahun}. Fungsi utama dari kode ini adalah memanggil kelas \emph{ViewModel} \texttt{Detail} dan menangani \emph{error handling} melalui blok \texttt{try-catch} untuk memastikan stabilitas aplikasi jika terjadi kegagalan sistem.
 
     \item \textbf{Logika Pengambilan Data (Fat ViewModel):} 
-    Seluruh logika manipulasi data dipusatkan di dalam \\ \texttt{PemeriksaanVM.cs} seperti yang ditunjukkan pada Kode 4.2.
+    Seluruh logika manipulasi data dipusatkan di dalam \\ \texttt{PemeriksaanVM.cs} seperti yang ditunjukkan pada Kode 4.3.
     
     \lstinputlisting[language={[Sharp]C}, caption={Logika Bisnis pada \emph{Fat ViewModel} \texttt{PemeriksaanVM.cs}}]{program/PemeriksaanVM.cs}
 
-    Penjelasan Kode 4.2: Penulis menggunakan \emph{Entity Framework Core} untuk mengambil data dari tabel \texttt{TPemeriksaan}. Teknik optimasi kunci yang diterapkan adalah penggunaan \texttt{GroupBy} dan \texttt{ToDictionary} untuk melakukan pemetaan data \emph{master} objek pajak di dalam memori (\emph{in-memory mapping}). Hal ini dilakukan untuk menghindari operasi \emph{join} tabel yang berat di sisi \emph{database} Oracle, sehingga proses pencocokan nama Wajib Pajak berdasarkan NOP menjadi jauh lebih cepat.
+    Penjelasan Kode 4.3: Penulis menggunakan \emph{Entity Framework Core} untuk mengambil data dari tabel \texttt{TPemeriksaan}. Teknik optimasi kunci yang diterapkan adalah penggunaan \texttt{GroupBy} dan \texttt{ToDictionary} untuk melakukan pemetaan data \emph{master} objek pajak di dalam memori (\emph{in-memory mapping}). Hal ini dilakukan untuk menghindari operasi \emph{join} tabel yang berat di sisi \emph{database} Oracle, sehingga proses pencocokan nama Wajib Pajak berdasarkan NOP menjadi jauh lebih cepat.
 
     \item \textbf{Enkapsulasi Logika:} 
     Seluruh kalkulasi persentase pencapaian dan perbandingan target vs realisasi dilakukan di sisi \emph{server} sebelum dikirim ke \emph{front-end} guna menjaga konsistensi data dan meringankan beban komputasi di sisi \emph{client}.    
 
     \item \textbf{Implementasi AJAX (\emph{Frontend}):} 
-    Untuk mengatasi masalah performa sistem lama, penulis mengimplementasikan fungsi asinkron menggunakan \emph{jQuery} sebagaimana ditunjukkan pada Kode 4.3.
+    Untuk mengatasi masalah performa sistem lama, penulis mengimplementasikan fungsi asinkron menggunakan \emph{jQuery} sebagaimana ditunjukkan pada Kode 4.4.
     
     \lstinputlisting[language={JavaScript}, caption={Implementasi AJAX Request pada \texttt{PemeriksaanAJAX.js}}]{program/PemeriksaanAJAX.js}
 
-    Penjelasan Kode 4.3: Fungsi \texttt{loadDetail} mengirimkan data permintaan ke \emph{Controller} di latar belakang. Penggunaan \texttt{beforeSend} berfungsi untuk menampilkan \emph{loading spinner} (\texttt{\#loading2-Detail}) sebagai indikator visual kepada pengguna bahwa data sedang diproses. Setelah data diterima (\emph{success}), hasilnya langsung dirender ke dalam elemen \texttt{\#Detail} tanpa perlu memuat ulang seluruh halaman web. Teknik ini berhasil mereduksi waktu muat secara drastis.
+    Penjelasan Kode 4.4: Fungsi \texttt{loadDetail} mengirimkan data permintaan ke \emph{Controller} di latar belakang. Penggunaan \texttt{beforeSend} berfungsi untuk menampilkan \emph{loading spinner} (\texttt{\#loading2-Detail}) sebagai indikator visual kepada pengguna bahwa data sedang diproses. Setelah data diterima (\emph{success}), hasilnya langsung dirender ke dalam elemen \texttt{\#Detail} tanpa perlu memuat ulang seluruh halaman web. Teknik ini berhasil mereduksi waktu muat secara drastis.
 \end{enumerate}
 
 \subsection{Pengembangan \emph{Presentation Layer} (\emph{Frontend})}
