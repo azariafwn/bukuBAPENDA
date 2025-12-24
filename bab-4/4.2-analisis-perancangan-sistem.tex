@@ -71,43 +71,78 @@ Perancangan antarmuka pada sistem MonPD Reborn dilakukan dengan mengedepankan pr
 
 \begin{itemize}
     \item Rancangan Pusat Komando (\emph{Command Center}) \\
-    Tampilan utama atau \emph{dashboard} dirancang menggunakan tata letak berbasis kartu (\emph{card-based layout}) seperti yang ditunjukkan pada Gambar \ref{fig:wireframe-dashboard-utama-monpd}. 
+    Tampilan utama atau \emph{dashboard} dirancang menggunakan tata letak berbasis kartu (\emph{card-based layout}) untuk memberikan ringkasan performa seluruh jenis pajak dalam satu layar tunggal sebagaimana ditunjukkan pada Gambar \ref{fig:wireframe-dashboard-utama-monpd}.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.8\textwidth]{gambar/wireframe-dashboard-utama-monpd.png}
+        \includegraphics[width=0.9\textwidth]{gambar/wireframe-dashboard-utama-monpd.png}
         \caption{\emph{Wireframe Dashboard} Utama MonPD Reborn}
         \label{fig:wireframe-dashboard-utama-monpd}
     \end{figure}
     \begin{itemize}
-        \item \textbf{Fitur:} Nama jenis pajak, nominal target, nominal realisasi, persentase capaian target, serta indikator visual berupa \emph{progress bar}.
-        \item \textbf{Analisis Penempatan:} Informasi tiap jenis pajak dikelompokkan ke dalam satu kartu untuk menjaga fokus pengguna pada satu jenis pajak dalam satu waktu. Nominal realisasi dan target diletakkan secara vertikal agar pengguna dapat melakukan perbandingan angka finansial secara langsung. Penempatan persentase capaian (\emph{light blue box}) dan \emph{progress bar} (\emph{red box}) di bagian atas berfungsi sebagai penanda visual instan (\emph{visual cues}) untuk mengetahui status pencapaian target tanpa harus meninjau angka nominal secara detail.
+        \item \textbf{Fitur Utama:}
+            \begin{itemize}
+                \item \textbf{Jenis Pajak:} Menampilkan label jenis pajak (eg: Perhotelan, Restoran, Parkir) untuk memudahkan klasifikasi data.
+                \item \textbf{Metrik Capaian:} Persentase angka realisasi terhadap target yang dihitung secara \emph{real-time} untuk memberikan indikator kinerja utama.
+                \item \textbf{Indikator Visual:} \emph{Progress bar} yang memberikan representasi visual dari persentase capaian memudahkan pemindaian cepat.
+                \item \textbf{Komparasi Finansial:} Penyajian nominal Realisasi (pendapatan yang sudah masuk) dan Target (sasaran tahunan).
+            \end{itemize}
+
+        \item \textbf{Analisis Penempatan:}
+            \begin{itemize}
+                \item \textbf{Hierarki Informasi Kartu:} Penggunaan \emph{card-based layout} berfungsi untuk melakukan enkapsulasi data. Setiap jenis pajak memiliki kontainer visualnya sendiri, mencegah terjadinya tumpang tindih informasi antar sektor pajak yang berbeda.
+                \item \textbf{Strategi \emph{Visual Cues}:} Penempatan Metrik Capaian dan \emph{Progress Bar} diletakkan di bagian atas kartu. Hal ini didasarkan pada pola baca pengguna yang cenderung memprioritaskan kesimpulan performa (pencapaian) sebelum melihat rincian nominal pendukungnya.
+                \item \textbf{Penyandingan Vertikal:} Nominal Realisasi diletakkan di sebelah nominal Target. Penempatan ini dirancang untuk mempermudah perbandingan visual langsung antar dua angka finansial yang berkaitan, sehingga pengguna dapat langsung mengetahui selisih antara pencapaian saat ini dengan target akhir.
+            \end{itemize}
     \end{itemize}
 
     \item Rancangan Struktur Modul Analitik \\
-    Setiap modul analitik (misalnya Monitoring Wilayah) menggunakan \emph{standardized template} tiga lapis yang konsisten untuk menciptakan alur kerja yang intuitif (Gambar \ref{fig:wireframe-dashboard-menu-monpd}).
+    Setiap modul analitik (misalnya Monitoring Wilayah) menggunakan \emph{standardized template} tiga lapis yang konsisten untuk menciptakan alur kerja yang intuitif bagi pengguna sebagaimana ditunjukkan pada Gambar \ref{fig:wireframe-dashboard-menu-monpd}.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.55\textwidth]{gambar/wireframe-dashboard-menu-monpd.png}
+        \includegraphics[width=0.65\textwidth]{gambar/wireframe-dashboard-menu-monpd.png}
         \caption{\emph{Wireframe Dashboard} Menu MonPD Reborn}
         \label{fig:wireframe-dashboard-menu-monpd}
     \end{figure}
     \begin{itemize}
-        \item \textbf{Panel Filter (Atas):} Diletakkan paling atas sebagai gerbang pertama sebelum data ditampilkan. Hal ini menerapkan prinsip \emph{Progressive Disclosure}, di mana sistem memaksa pengguna menentukan parameter data (Tahun, Bulan, Wilayah) guna menjaga performa sistem tetap ringan saat memuat data.
-        \item \textbf{Ringkasan KPI (Tengah):} Terdiri dari kartu-kartu metrik sebagai rangkuman hasil filter. Penempatan di tengah berfungsi sebagai jembatan informasi antara parameter filter dan data detail.
-        \item \textbf{Tabel Rincian (Bawah):} Area terluas diletakkan di bagian bawah untuk menyajikan detail transaksi yang kompleks secara komprehensif.
+        \item \textbf{Fitur Utama:}
+            \begin{itemize}
+                \item \textbf{Panel Filter:} Terdiri dari komponen \emph{dropdown} untuk pemilihan wilayah (UPTB), jenis pajak, tahun, dan bulan, serta tombol eksekusi "Terapkan Filter".
+                \item \textbf{Ringkasan KPI:} Menampilkan kartu-kartu metrik utama (\emph{Key Performance Indicators}) seperti Total Target, Total Realisasi, Pencapaian Harian, dan Jumlah Wajib Pajak (ini bukan standar, karena KPI tiap menu memiliki komponen berbeda).
+                \item \textbf{Tabel Rincian:} Menyajikan data rincian per baris yang dilengkapi dengan kolom Target, Realisasi, serta visualisasi \emph{progress bar} untuk setiap baris data.
+            \end{itemize}
+
+        \item \textbf{Analisis Penempatan:}
+            \begin{itemize}
+                \item \textbf{Strategi \emph{Top-Down Workflow}:} Penempatan \textbf{Panel Filter} di posisi teratas berfungsi sebagai gerbang utama operasional. Hal ini menerapkan prinsip \emph{Progressive Disclosure}, di mana sistem membatasi pemuatan data secara masif di awal untuk menjaga performa (\emph{load time}), dan baru akan menarik data spesifik setelah pengguna menentukan parameter pilihannya.
+                \item \textbf{Hierarki Kognitif \emph{Summary-to-Detail}:} \textbf{Ringkasan KPI} diletakkan di bagian tengah sebagai jembatan informasi. Secara psikologis, pengguna memerlukan konklusi cepat (angka agregat) segera setelah menerapkan filter, sebelum akhirnya melakukan eksplorasi mendalam pada data baris demi baris di bagian bawah.
+                \item \textbf{Optimalisasi Ruang Kerja Tabel:} \textbf{Tabel Rincian} diletakkan sebagai elemen paling luas di bagian bawah. Penempatan ini memberikan ruang visual yang maksimal bagi komponen \emph{DevExtreme DataGrid} untuk menampilkan banyak kolom data secara komprehensif tanpa terasa sesak, sehingga memudahkan proses analisis rincian transaksi oleh pegawai Bapenda.
+            \end{itemize}
     \end{itemize}
 
     \item Rancangan Interaktivitas Data (\emph{DataGrid}) \\
-    Komponen \emph{DataGrid} (Gambar 4.3) dirancang untuk memberikan kendali analisis penuh kepada pengguna tanpa perlu berpindah halaman.
+    Komponen \emph{DataGrid} dirancang sebagai pusat eksplorasi data yang memungkinkan pengguna melakukan manipulasi informasi secara mandiri tanpa perlu bergantung pada proses pemuatan ulang halaman (\emph{refresh}) sebagaimana ditunjukkan pada Gambar \ref{fig:wireframe-datagrid}.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.85\textwidth]{gambar/wireframe-datagrid.png}
+        \includegraphics[width=0.96\textwidth]{gambar/wireframe-datagrid.png}
         \caption{\emph{Wireframe DataGrid}}
         \label{fig:wireframe-datagrid}
     \end{figure}
     \begin{itemize}
-        \item \textbf{Fitur:} \emph{Filter Row} per kolom, \emph{Header Filter} untuk nilai unik, dan pengurutan dinamis.
-        \item \textbf{Analisis Penempatan:} Ikon pencarian (\emph{magnifying glass}) diletakkan langsung di bawah \emph{header} kolom untuk memudahkan pencarian data spesifik (misalnya Nama atau Alamat) secara cepat, mengurangi kebutuhan untuk fitur pencarian global yang seringkali menghasilkan data yang terlalu luas.
+        \item \textbf{Fitur Utama:}
+            \begin{itemize}
+                \item \textbf{Pencarian Global:} Fitur pencarian tingkat tinggi di pojok kanan atas yang memungkinkan pengguna mencari kata kunci tertentu di seluruh kolom tabel secara simultan.
+                \item \textbf{\emph{Header Filter} dan \emph{Sorting}:} Setiap judul kolom (\emph{Nama, Alamat, Jenis OP}, dll.) dilengkapi dengan fungsi pengurutan (\emph{sorting}) naik atau turun serta filter nilai unik (\emph{header filter}) untuk mempersempit kategori data.
+                \item \textbf{Pencarian Per Kolom:} Baris filter (\emph{filter row}) yang terletak tepat di bawah \emph{header}. Fitur ini memungkinkan pengguna melakukan penyaringan data secara spesifik pada kolom tertentu, seperti mencari nama Wajib Pajak tanpa mencampuradukkan dengan data alamat.
+                \item \textbf{Navigasi Halaman:} Terletak di bagian bawah kiri, fitur ini membatasi jumlah data yang tampil per layar untuk menjaga performa \emph{rendering} pada sisi \emph{client}.
+            \end{itemize}
+
+        \item \textbf{Analisis Penempatan:}
+            \begin{itemize}
+                \item \textbf{Konvensi Standar Pencarian Global:} Penempatan \textbf{Pencarian Global} di bagian atas kanan mengikuti standar \emph{User Interface} yang umum, memudahkan pengguna baru untuk langsung mengenali titik awal pencarian informasi secara cepat.
+                \item \textbf{Kedekatan Kontekstual:} Penempatan \textbf{Pencarian Per Kolom} dan \textbf{\emph{Header Filter}} yang melekat langsung pada baris judul kolom bertujuan untuk efisiensi kognitif. Pengguna tidak perlu memindahkan fokus pandangan terlalu jauh dari data yang sedang diamati untuk melakukan penyaringan informasi yang lebih granular.
+                \item \textbf{Kontrol Presisi Data:} Dengan adanya baris filter khusus per kolom, beban kerja sistem menjadi lebih efisien karena kueri yang dikirim ke server (\emph{server-side filtering}) menjadi lebih spesifik, mengurangi potensi beban \emph{payload} data yang tidak relevan.
+                \item \textbf{Manajemen Beban Visual:} \textbf{\emph{Pagination}} diletakkan di bagian akhir alur konsumsi data (bawah). Hal ini memastikan pengguna hanya fokus pada subset data tertentu pada satu waktu, yang secara teknis mendukung tujuan utama \emph{MonPD Reborn} dalam mereduksi waktu muat data secara signifikan.
+            \end{itemize}
     \end{itemize}
 
     \item Rancangan \emph{Drill-down} dan \emph{Pop-up} Detail \\
@@ -126,26 +161,45 @@ Perancangan antarmuka pada sistem MonPD Reborn dilakukan dengan mengedepankan pr
         \label{fig:wireframe-geospasial}
     \end{figure}
     \begin{itemize}
-        \item \textbf{Fitur:} Pencarian nama objek pajak, filter wilayah (UPTB), filter jenis pajak secara spesifik, dan area pemetaan titik lokasi.
-        \item \textbf{Analisis Penempatan:} 
+        \item \textbf{Fitur Utama:}
             \begin{itemize}
-                \item Filter Wilayah dan Nama Objek Pajak (\emph{yellow box}): Diletakkan di bagian atas panel kendali untuk memudahkan pengguna mempersempit pencarian lokasi berdasarkan nama spesifik atau wilayah kerja UPTB tertentu.
-                \item Filter Jenis Pajak (\emph{green box}): Penempatan daftar pilihan jenis pajak secara vertikal memungkinkan pengguna untuk melakukan \emph{plotting} multi-sektor sekaligus atau fokus pada satu kategori pajak saja guna melihat kepadatan sebaran secara visual.
-                \item Titik Lokasi Objek Pajak (\emph{blue box}): Area peta diletakkan sebagai elemen visual utama yang paling luas. Penempatan ini memudahkan tim lapangan dalam merencanakan rute pengawasan secara efektif berdasarkan konsentrasi sebaran titik-titik objek pajak yang muncul setelah parameter filter diterapkan.
+                \item \textbf{Kontrol Pencarian dan Wilayah:} Terdiri dari kolom input "Cari Nama OP" untuk pencarian spesifik entitas pajak dan \emph{dropdown} "Pilih UPTB" untuk membatasi cakupan wilayah kerja administratif.
+                \item \textbf{Filter Kategori:} Menyediakan daftar pilihan \emph{checkbox} jenis pajak (Hotel, Restoran, Hiburan, PPJ, Parkir) yang memungkinkan pengguna melakukan \emph{overlaying} data dari berbagai sektor pajak secara bersamaan.
+                \item \textbf{Kanvas Pemetaan:} Area peta interaktif yang menampilkan \emph{plotting} titik-titik koordinat objek pajak secara \emph{real-time} berdasarkan parameter filter yang diterapkan.
+            \end{itemize}
+
+        \item \textbf{Analisis Penempatan:}
+            \begin{itemize}
+                \item \textbf{Aksesibilitas Kontrol:} Penempatan panel filter di sisi atas dan samping kiri mengikuti pola pandangan manusia yang memulai pemindaian dari pojok kiri atas. Hal ini memastikan pengguna dapat dengan cepat memodifikasi parameter data sebelum beralih ke analisis visual pada peta.
+                \item \textbf{Fokus Analisis Spasial:} Area peta diletakkan sebagai elemen pusat dengan dimensi paling luas. Penempatan ini bertujuan untuk meminimalisir distraksi visual lain, sehingga tim lapangan dapat memfokuskan perhatian sepenuhnya pada kepadatan (\emph{clustering}) titik objek pajak.
+                \item \textbf{Efisiensi Perencanaan Rute:} Integrasi antara filter wilayah (UPTB) dan titik lokasi dirancang untuk mempermudah operasional pengawasan di lapangan. Dengan melihat kepadatan titik pada satu wilayah UPTB tertentu, tim pengawas dapat merencanakan rute inspeksi yang paling efisien berdasarkan jarak antar objek pajak, yang pada akhirnya meningkatkan produktivitas kerja.
             \end{itemize}
     \end{itemize}
 
 
     \item Rancangan Komparasi Realisasi Pajak \\
-    Penyajian data rekapitulasi kinerja (Gambar \ref{fig:wireframe-realisasi-pajak}) difokuskan pada perbandingan target vs realisasi.
+    Penyajian data rekapitulasi kinerja dirancang untuk memberikan gambaran cepat mengenai efektivitas pemungutan pajak melalui perbandingan rencana strategis (\emph{target}) terhadap pencapaian aktual (\emph{realisasi}) sebagaimana ditunjukkan pada Gambar \ref{fig:wireframe-realisasi-pajak}.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.75\textwidth]{gambar/wireframe-realisasi-pajak.png}
+        \includegraphics[width=0.76\textwidth]{gambar/wireframe-realisasi-pajak.png}
         \caption{Wireframe Realisasi Pajak}
         \label{fig:wireframe-realisasi-pajak}
     \end{figure}
     \begin{itemize}
-        \item \textbf{Indikator Visual:} Penggunaan \emph{progress bar} berwarna disamping angka persentase. 
-        \item \textbf{Analisis Penempatan:} Kolom Target dan Realisasi disandingkan secara berdampingan untuk memudahkan pemindaian visual (\emph{visual scanning}). Indikator warna (merah/kuning/hijau) dan \emph{progress bar} diletakkan di akhir baris sebagai konklusi cepat terhadap status pencapaian metrik tersebut.
+        \item \textbf{Fitur Utama:}
+            \begin{itemize}
+                \item \textbf{Kategorisasi Pajak:} Menampilkan label sektor pajak secara deskriptif (seperti PBJT Makanan, Air Tanah, Tenaga Listrik) untuk mengidentifikasi sumber pendapatan bagi pengguna.
+                \item \textbf{Target Finansial:} Menyajikan nominal target penerimaan pajak yang telah ditetapkan dalam periode anggaran tertentu.
+                \item \textbf{Realisasi Aktual:} Menampilkan angka riil pendapatan yang telah masuk ke kas daerah berdasarkan transaksi wajib pajak.
+                \item \textbf{Indikator Pencapaian:} Berisi perhitungan persentase capaian secara matematis disertai elemen visual berupa \emph{progress bar} berwarna untuk memberikan pemahaman progres secara instan.
+            \end{itemize}
+
+        \item \textbf{Analisis Penempatan:}
+            \begin{itemize}
+                \item \textbf{Penyandingan Horizontal:} Kolom Target dan Realisasi diletakkan berdampingan secara horizontal. Penempatan ini dirancang untuk mempercepat proses kognitif pengguna dalam membandingkan antara sasaran dengan hasil aktual (\emph{plan vs reality}) tanpa perlu memindahkan fokus pandangan terlalu jauh.
+                \item \textbf{\emph{Result-Driven Layout}:} Menempatkan kolom Persentase Capaian di posisi paling kanan mengikuti konvensi alur baca manusia dari kiri ke kanan. Hal ini menjadikan kolom tersebut sebagai "titik kesimpulan" atau konklusi dari rincian data finansial yang ada di sebelah kirinya.
+                \item \textbf{Efektivitas \emph{Visual Cues}:} Penggunaan \emph{progress bar} berwarnadi akhir kolom memberikan penilaian kinerja secara intuitif. Pengguna dapat langsung mengenali sektor pajak yang memerlukan perhatian khusus melalui visualisasi panjang bar tersebut tanpa harus membaca deretan angka nominal yang panjang, sehingga mendukung prinsip efisiensi operasional sistem \emph{MonPD Reborn}.
+            \end{itemize}
     \end{itemize}
+
 \end{itemize}
