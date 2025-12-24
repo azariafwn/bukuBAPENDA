@@ -44,6 +44,9 @@
 \usepackage[T1]{fontenc} % Memperbaiki masalah tanda kutip dan karakter spesial
 \usepackage{textcomp}    % Mendukung simbol tambahan
 
+\usepackage{xurl} % Memungkinkan URL diputus di karakter mana saja
+\usepackage[indonesian]{babel}
+
 
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning}
@@ -60,7 +63,7 @@
 % Definisi untuk "Hati ini sengaja dikosongkan"
 \def\kosong{
   \thispagestyle{empty}      % Menghilangkan nomor halaman agar tidak terlihat
-  \addtocounter{page}{-1}    % Mengurangi hitungan halaman (agar tidak bertambah)
+  % \addtocounter{page}{-1}    % Mengurangi hitungan halaman (agar tidak bertambah)
   \vspace*{\fill}
   \begin{center}\textit{Halaman ini sengaja dikosongkan}\end{center}
   \vfill
@@ -131,6 +134,28 @@
   stringstyle=\color{string}\ttfamily,
 }
 
+% --- Konfigurasi Daftar Lampiran ---
+\usepackage[titles]{tocloft} % TAMBAHKAN OPSI [titles] DI SINI
+\newcommand{\listlampiranname}{DAFTAR LAMPIRAN}
+\newlistof{lampiran}{lop}{\listlampiranname}
+
+% Mengatur format entitas di Daftar Lampiran (Tetap sama)
+\renewcommand{\cftlampirannumwidth}{6.5em}
+\renewcommand{\cftlampiranpresnum}{Lampiran~}
+
+% Command untuk memulai lampiran dengan banyak konten
+  \newcommand{\mulailampiran}[1]{%
+    \refstepcounter{lampiran}
+    \addcontentsline{lop}{lampiran}{\protect\numberline{\Alph{lampiran}} #1}
+    \newpage
+    \begin{center}
+      {\bfseries LAMPIRAN \Alph{lampiran}} \\
+      {\bfseries #1} \\
+      \vspace{1cm}
+  }
+
+  % Command untuk menutup blok lampiran
+  \newcommand{\tutuplampiran}{\end{center}}
 
 
 % Isi keseluruhan dokumen
@@ -139,9 +164,9 @@
   % Nomor halaman pembuka dimulai dari sini
   \pagenumbering{roman}
 
-  % Sampul luar
-  \input{sampul/sampul-luar.tex}
-  \cleardoublepage
+  % % Sampul luar
+  % \input{sampul/sampul-luar.tex}
+  % \cleardoublepage
 
   % Sampul dalam
   \input{sampul/sampul-dalam.tex}
@@ -177,6 +202,14 @@
   \listoftables
   \cleardoublepage
 
+  % Daftar lampiran
+  \addcontentsline{toc}{chapter}{\listlampiranname}
+  \chapter*{\centering\listlampiranname} % Memanggil judul secara manual agar tetap Center
+  \makeatletter
+  \@starttoc{lop} % Memanggil isi daftar lampiran
+  \makeatother
+  \cleardoublepage  
+
   % Nomor halaman isi dimulai dari sini
   \pagenumbering{arabic}
 
@@ -206,9 +239,13 @@
   \bibliographystyle{unsrtnat}
   \bibliography{pustaka/pustaka.bib}
   \cleardoublepage
+  
+  \addcontentsline{toc}{chapter}{LAMPIRAN}
+  \input{lainnya/lampiran.tex}
+  \cleardoublepage
 
   % Biografi penulis
-  \input{lainnya/biografi-penulis.tex}
-  \cleardoublepage
+  % \input{lainnya/biografi-penulis.tex}
+  % \cleardoublepage
 
 \end{document}
